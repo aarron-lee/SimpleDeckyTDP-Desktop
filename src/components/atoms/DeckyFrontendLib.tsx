@@ -8,6 +8,7 @@ import {
   FormLabel,
   Heading,
   Slider,
+  SliderMark,
   SliderThumb,
   SliderTrack,
   Switch,
@@ -91,16 +92,41 @@ export const DeckySlider: FC<SliderProps> = ({
   value,
   min,
   max,
+  notchLabels,
+  valueSuffix,
   step,
+  onChange,
 }) => {
   return (
     <Box>
-      <FormLabel>{label}</FormLabel>
-      <Slider value={value} min={min} max={max} step={step}>
+      <FormLabel>
+        {label} -{" "}
+        {notchLabels
+          ? notchLabels.find((notch) => notch.value === value)?.label
+          : value}
+        {valueSuffix}
+      </FormLabel>
+      <Slider
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(value) => {
+          return onChange(value);
+        }}
+      >
+        {notchLabels &&
+          notchLabels.map((label, idx) => {
+            if (typeof label.value === "number")
+              return (
+                <SliderMark key={idx} value={label.value}>
+                  {label.label}
+                </SliderMark>
+              );
+          })}
         <SliderTrack></SliderTrack>
         <SliderThumb />
       </Slider>
-      ;
     </Box>
   );
 };
