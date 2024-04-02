@@ -20,7 +20,6 @@ export enum LegionGoAdvancedOptions {
 }
 
 export const DesktopAdvancedOptions = [
-  AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING,
   AdvancedOptionsEnum.ENABLE_POWER_CONTROL,
   LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
   RogAllyAdvancedOptions.USE_PLATFORM_PROFILE,

@@ -44,7 +44,7 @@ const App: FC = memo(({}) => {
           <PowerControl />
           {!isDesktop && steamPatchEnabled && <SteamPatchDefaultTdpSlider />}
           <TdpRange />
-          <PollTdp />
+          {!isDesktop && <PollTdp />}
           <AdvancedOptions />
           {!isDesktop && (
             <ErrorBoundary title="OTA Updates">
