@@ -28,6 +28,10 @@ const App: FC = memo(({}) => {
   const isDesktop = useSelector(selectIsDesktop);
   const steamPatchEnabled = useIsSteamPatchEnabled();
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <>
       {!loading && (
