@@ -23,9 +23,8 @@ export const useFetchInitialStateEffect = () => {
       getSettings().then((result) => {
         if (result.success) {
           const results = result.result || {};
-
           //@ts-ignore
-          dispatch(updateInitialLoad(...results));
+          dispatch(updateInitialLoad(results));
         }
       });
     }

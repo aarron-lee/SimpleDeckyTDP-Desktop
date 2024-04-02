@@ -11,7 +11,7 @@ type UiStateType = {
 
 const initialState: UiStateType = {
   powerControlInfo: undefined,
-  isDesktop: false,
+  isDesktop: true,
 };
 
 export const uiSlice = createSlice({
