@@ -1,0 +1,39 @@
+{
+  "name": "com.aarron-lee.simpledeckytdp-desktop",
+  "author": {
+    "name": "Aarron L"
+  },
+  "homepage": "https://github.com/aarron-lee/SimpleDeckyTDP-Desktop",
+  "description": "SimpleDeckyTDP Desktop Frontend",
+  "license": "",
+  "version": "0.0.1",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "electron-packager": "^17.1.2"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/electron-builder install-app-deps",
+    "start": "./node_modules/.bin/electron .",
+    "build": "./node_modules/.bin/electron-builder build --linux"
+  },
+  "build": {
+    "appId": "com.aarron-lee.simpledeckytdp-desktop",
+    "executableName": "SimpleDeckyTDP-Desktop",
+    "artifactName": "SimpleDeckyTDP-Desktop.${ext}",
+    "productName": "SimpleDeckyTDP Desktop",
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon/android-chrome-512x512.png",
+      "category": "game"
+    }
+  },
+  "files": [
+    "static/**/*",
+    "!**/node_modules/*",
+    "!**/dist/*",
+    "!**/src/*",
+    "index.html"
+  ]
+}
