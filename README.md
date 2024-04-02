@@ -1,30 +1,25 @@
-# React + TypeScript + Vite
+# SimpleDeckyTDP Desktop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An experimental desktop GUI/Frontend to the SimpleDeckyTDP Decky Plugin
 
-Currently, two official plugins are available:
+Note, this requires Decky Loader + SimpleDeckyTDP to already be installed.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Requirements
 
-## Expanding the ESLint configuration
+Decky Loader and SimpleDeckyTDP already installed
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+# Limitations
 
-- Configure the top-level `parserOptions` property like this:
+The Desktop app cannot do per-game profiles.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+It also should not be used simultaneously with the SimpleDeckyTDP decky plugin, you should only use one or the other at any given time.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# Installation
+
+If not already installed, install Decky Loader + SimpleDeckyTDP
+
+Then, download the latest AppImage from releases and install it via an AppImage manager like GearLever, AppImageLauncher, etc
+
+# Attribution
+
+favicon for icons ([cc-by4.0 license](https://creativecommons.org/licenses/by/4.0/)) - https://favicon.io/emoji-favicons/video-game
