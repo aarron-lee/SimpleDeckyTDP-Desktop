@@ -1,10 +1,6 @@
 import { TdpProfiles } from "../redux-modules/settingsSlice";
 import serverApi from "./serverApi";
 
-export const getServerApi = () => {
-  return serverApi;
-};
-
 export enum AdvancedOptionsEnum {
   STEAM_PATCH = "steamPatch",
   ENABLE_POWER_CONTROL = "enablePowercontrol",
@@ -13,6 +9,23 @@ export enum AdvancedOptionsEnum {
   AC_POWER_PROFILES = "acPowerProfiles",
   FORCE_DISABLE_TDP_ON_RESUME = "forceDisableTdpOnResume",
 }
+
+export enum RogAllyAdvancedOptions {
+  USE_PLATFORM_PROFILE = "platformProfile",
+  USE_WMI = "useWmi",
+}
+
+export enum LegionGoAdvancedOptions {
+  CUSTOM_TDP_MODE = "lenovoCustomTdpMode",
+}
+
+export const DesktopAdvancedOptions = [
+  AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING,
+  AdvancedOptionsEnum.ENABLE_POWER_CONTROL,
+  LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
+  RogAllyAdvancedOptions.USE_PLATFORM_PROFILE,
+  RogAllyAdvancedOptions.USE_WMI,
+] as string[];
 
 export enum GpuModes {
   DEFAULT = "DEFAULT",
@@ -123,6 +136,10 @@ export const createServerApiHelpers = (serverAPI: any) => {
     saveTdpProfiles: createSaveTdpProfiles(serverAPI),
     isSteamRunning: createGetIsSteamRunning(serverAPI),
   };
+};
+
+export const getServerApi = () => {
+  return serverApi;
 };
 
 export const getLogInfo = () => {

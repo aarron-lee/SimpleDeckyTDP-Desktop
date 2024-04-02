@@ -8,6 +8,8 @@ import {
 import { get } from "lodash";
 import ErrorBoundary from "../ErrorBoundary";
 import { DeckyRow, DeckySection, DeckyToggle } from "../atoms/DeckyFrontendLib";
+import { useIsDesktop } from "../../hooks/desktopHooks";
+import { DesktopAdvancedOptions } from "../../backend/utils";
 
 export const useIsSteamPatchEnabled = () => {
   const steamPatchEnabled = useSelector(getSteamPatchEnabledSelector);
@@ -17,6 +19,7 @@ export const useIsSteamPatchEnabled = () => {
 
 const AdvancedOptions = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const isDesktop = useIsDesktop();
   const { advancedState, advancedOptions } = useSelector(
     getAdvancedOptionsInfoSelector
   );
@@ -31,6 +34,10 @@ const AdvancedOptions = () => {
         {advancedOptions.map((option, idx) => {
           const { name, type, statePath, defaultValue, description } = option;
           const value = get(advancedState, statePath, defaultValue);
+
+          if (isDesktop && !DesktopAdvancedOptions.includes(statePath)) {
+            return null;
+          }
 
           if (type === "boolean") {
             return (
