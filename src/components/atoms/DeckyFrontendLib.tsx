@@ -8,9 +8,11 @@ import {
   FormLabel,
   Heading,
   Slider,
+  SliderFilledTrack,
   SliderMark,
   SliderThumb,
   SliderTrack,
+  Spacer,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -30,7 +32,7 @@ type SectionProps = {
 
 export const DeckySection: FC<SectionProps> = ({ title, children }) => {
   return (
-    <Box>
+    <Box padding={"16px"} margin="16px" border="2px solid black">
       {title && <Heading size="lg">{title}</Heading>}
       <Box>{children}</Box>
     </Box>
@@ -65,7 +67,7 @@ export const DeckyToggle: FC<ToggleProps> = ({
           return onChange(value);
         }}
       />
-      {description}
+      <Box>{description}</Box>
     </Box>
   );
 };
@@ -97,36 +99,54 @@ export const DeckySlider: FC<SliderProps> = ({
   step,
   onChange,
 }) => {
+  const getLabelText = (value?: number) => {
+    const notch = notchLabels?.find((notch) => notch.value === value);
+    if (notch) {
+      let label = notch.label === "Perform ance" ? "Performance" : notch.label;
+      return label;
+    }
+  };
+
   return (
     <Box>
       <FormLabel>
-        {label} -{" "}
-        {notchLabels
-          ? notchLabels.find((notch) => notch.value === value)?.label
-          : value}
+        {label} - {notchLabels ? getLabelText(value) : value}
         {valueSuffix}
       </FormLabel>
-      <Slider
-        value={value}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(value) => {
-          return onChange(value);
-        }}
-      >
-        {notchLabels &&
-          notchLabels.map((label, idx) => {
-            if (typeof label.value === "number")
-              return (
-                <SliderMark key={idx} value={label.value}>
-                  {label.label}
-                </SliderMark>
-              );
-          })}
-        <SliderTrack></SliderTrack>
-        <SliderThumb />
-      </Slider>
+      <Box padding={"8px 16px"}>
+        <Slider
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={(value) => {
+            return onChange(value);
+          }}
+          margin={"16px 0"}
+        >
+          {notchLabels &&
+            notchLabels.map((label, idx) => {
+              if (typeof label.value === "number") {
+                const labelText = getLabelText(label.value);
+                return (
+                  <SliderMark
+                    key={idx}
+                    mt="1"
+                    ml="-20.5"
+                    value={label.value}
+                    overflowWrap={"break-word"}
+                  >
+                    {labelText}
+                  </SliderMark>
+                );
+              }
+            })}
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+      </Box>
     </Box>
   );
 };
