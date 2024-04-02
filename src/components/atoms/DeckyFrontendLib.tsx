@@ -12,7 +12,6 @@ import {
   SliderMark,
   SliderThumb,
   SliderTrack,
-  Spacer,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -32,7 +31,7 @@ type SectionProps = {
 
 export const DeckySection: FC<SectionProps> = ({ title, children }) => {
   return (
-    <Box padding={"16px"} margin="16px" border="2px solid black">
+    <Box padding={"16px"} margin="16px">
       {title && <Heading size="lg">{title}</Heading>}
       <Box>{children}</Box>
     </Box>
@@ -107,8 +106,13 @@ export const DeckySlider: FC<SliderProps> = ({
     }
   };
 
+  const hasLargeNotchLabels = [
+    "Energy Performance Preference",
+    "Power Governor",
+  ].includes(label);
+
   return (
-    <Box>
+    <Box margin={"8px 0"}>
       <FormLabel>
         {label} - {notchLabels ? getLabelText(value) : value}
         {valueSuffix}
@@ -124,23 +128,40 @@ export const DeckySlider: FC<SliderProps> = ({
           }}
           margin={"16px 0"}
         >
-          {notchLabels &&
-            notchLabels.map((label, idx) => {
-              if (typeof label.value === "number") {
-                const labelText = getLabelText(label.value);
-                return (
-                  <SliderMark
-                    key={idx}
-                    mt="1"
-                    ml="-20.5"
-                    value={label.value}
-                    overflowWrap={"break-word"}
-                  >
-                    {labelText}
-                  </SliderMark>
-                );
-              }
-            })}
+          <Box>
+            {notchLabels &&
+              notchLabels.map((label, idx) => {
+                if (typeof label.value === "number") {
+                  const labelText = getLabelText(label.value);
+                  const spans = labelText?.split(" ")?.map((word, i) => {
+                    return <span key={i}>{word}</span>;
+                  });
+                  let ml = "-20.5px";
+
+                  if (hasLargeNotchLabels) {
+                    ml = "-30.5px";
+                    if (idx === notchLabels.length - 1) {
+                      // marginLeft must be even larger for last element
+                      ml = "-60.5px";
+                    }
+                  }
+
+                  return (
+                    <SliderMark
+                      key={idx}
+                      mt="1"
+                      ml={ml}
+                      value={label.value}
+                      display={"flex"}
+                      flexDirection={"column"}
+                      alignItems={"center"}
+                    >
+                      {spans}
+                    </SliderMark>
+                  );
+                }
+              })}
+          </Box>
           <SliderTrack>
             <SliderFilledTrack />
           </SliderTrack>

@@ -17,8 +17,10 @@ const createMainWindow = () => {
   const show = !getItem(IS_WINDOW_HIDDEN);
 
   mainWindow = new BrowserWindow({
-    width: 400,
+    width: 720,
     height: 720,
+    minWidth: 600,
+    minHeight: 600,
     show,
     backgroundColor: "white",
     webPreferences: {
@@ -32,6 +34,8 @@ const createMainWindow = () => {
   // )}`;
 
   mainWindow.setMenuBarVisibility(false);
+
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadFile("./static/build/index.html");
 
