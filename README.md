@@ -18,9 +18,9 @@ It also should not be used simultaneously with the SimpleDeckyTDP decky plugin, 
 
 # Installation
 
-If not already installed, install Decky Loader + SimpleDeckyTDP
+If not already installed, install Decky Loader + [SimpleDeckyTDP](https://github.com/aarron-lee/SimpleDeckyTDP)
 
-Then, download the latest AppImage from releases and install it via an AppImage manager like GearLever, AppImageLauncher, etc
+Then, download the latest AppImage from [releases](https://github.com/aarron-lee/SimpleDeckyTDP-Desktop/releases) and install it via an AppImage manager like [GearLever](https://flathub.org/apps/it.mijorus.gearlever), AppImageLauncher, etc
 
 # Attribution
 
