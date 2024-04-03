@@ -14,7 +14,7 @@ Decky Loader and SimpleDeckyTDP already installed
 
 # Limitations
 
-Note, the Desktop app does not have full feature parity with the Decky Plugin. **Certain features cannot be implemented**, such as:
+Note, the Desktop app does not have full feature parity with the Decky Plugin. **Certain features cannot be implemented yet**, such as:
 
 - per-game profiles
 - set TDP on resume
@@ -22,6 +22,8 @@ Note, the Desktop app does not have full feature parity with the Decky Plugin. *
 - etc
 
 It also should not be used simultaneously with the SimpleDeckyTDP decky plugin, you should only use one or the other at any given time.
+
+This is because 2-way communication between the plugin and Desktop app is currently not possible.
 
 # Installation
 
