@@ -1,6 +1,8 @@
 # SimpleDeckyTDP Desktop
 
-An experimental desktop GUI/Frontend to the SimpleDeckyTDP Decky Plugin
+![app](./images/app.png)
+
+An desktop GUI/Frontend to the SimpleDeckyTDP Decky Plugin
 
 Note, this requires Decky Loader + SimpleDeckyTDP to already be installed.
 
