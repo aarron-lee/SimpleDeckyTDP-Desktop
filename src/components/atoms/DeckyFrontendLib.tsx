@@ -5,13 +5,16 @@
 import {
   Box,
   Button,
+  Divider,
   FormLabel,
+  HStack,
   Heading,
   Slider,
   SliderFilledTrack,
   SliderMark,
   SliderThumb,
   SliderTrack,
+  Spacer,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -56,18 +59,23 @@ export const DeckyToggle: FC<ToggleProps> = ({
   description,
 }) => {
   return (
-    <Box>
-      <FormLabel>{label}</FormLabel>
-      <Switch
-        isChecked={checked}
-        onChange={(e) => {
-          const value = e.target.checked;
+    <>
+      <Box>
+        <FormLabel>{label}</FormLabel>
+        <HStack spacing="16px">
+          <Switch
+            isChecked={checked}
+            onChange={(e) => {
+              const value = e.target.checked;
 
-          return onChange(value);
-        }}
-      />
-      <Box>{description}</Box>
-    </Box>
+              return onChange(value);
+            }}
+          />
+          <span>{description}</span>
+        </HStack>
+      </Box>
+      <Divider margin="8px 0" />
+    </>
   );
 };
 
@@ -112,63 +120,65 @@ export const DeckySlider: FC<SliderProps> = ({
   ].includes(label);
 
   return (
-    <Box margin={"8px 0"}>
-      <FormLabel>
-        {label} - {notchLabels ? getLabelText(value) : value}
-        {valueSuffix}
-      </FormLabel>
-      <Box padding={"8px 16px"}>
-        <Slider
-          value={value}
-          min={min}
-          max={max}
-          step={step}
-          onChange={(value) => {
-            return onChange(value);
-          }}
-          margin={"16px 0"}
-        >
-          <Box>
-            {notchLabels &&
-              notchLabels.map((label, idx) => {
-                if (typeof label.value === "number") {
-                  const labelText = getLabelText(label.value);
-                  const spans = labelText?.split(" ")?.map((word, i) => {
-                    return <span key={i}>{word}</span>;
-                  });
-                  let ml = "-20.5px";
+    <>
+      <Box margin="32px 0">
+        <FormLabel>
+          {label} - {notchLabels ? getLabelText(value) : value}
+          {valueSuffix}
+        </FormLabel>
+        <Box padding={"0 16px"}>
+          <Slider
+            value={value}
+            min={min}
+            max={max}
+            step={step}
+            onChange={(value) => {
+              return onChange(value);
+            }}
+            margin={"16px 0"}
+          >
+            <Box>
+              {notchLabels &&
+                notchLabels.map((label, idx) => {
+                  if (typeof label.value === "number") {
+                    const labelText = getLabelText(label.value);
+                    const spans = labelText?.split(" ")?.map((word, i) => {
+                      return <span key={i}>{word}</span>;
+                    });
+                    let ml = "-20.5px";
 
-                  if (hasLargeNotchLabels) {
-                    ml = "-30.5px";
-                    if (idx === notchLabels.length - 1) {
-                      // marginLeft must be even larger for last element
-                      ml = "-60.5px";
+                    if (hasLargeNotchLabels) {
+                      ml = "-30.5px";
+                      if (idx === notchLabels.length - 1) {
+                        // marginLeft must be even larger for last element
+                        ml = "-60.5px";
+                      }
                     }
-                  }
 
-                  return (
-                    <SliderMark
-                      key={idx}
-                      mt="1"
-                      ml={ml}
-                      value={label.value}
-                      display={"flex"}
-                      flexDirection={"column"}
-                      alignItems={"center"}
-                    >
-                      {spans}
-                    </SliderMark>
-                  );
-                }
-              })}
-          </Box>
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb />
-        </Slider>
+                    return (
+                      <SliderMark
+                        key={idx}
+                        mt="1"
+                        ml={ml}
+                        value={label.value}
+                        display={"flex"}
+                        flexDirection={"column"}
+                        alignItems={"center"}
+                      >
+                        {spans}
+                      </SliderMark>
+                    );
+                  }
+                })}
+            </Box>
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb />
+          </Slider>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
