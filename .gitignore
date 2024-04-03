@@ -26,6 +26,7 @@ dist-ssr
 # electron
 electron/*
 !electron/main.js
+!electron/preload.js
 !electron/README.md
 !electron/package.json
 !electron/package-lock.json
