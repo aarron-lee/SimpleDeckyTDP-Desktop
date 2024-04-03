@@ -22,6 +22,8 @@ const createMainWindow = () => {
     height: 800,
     minWidth: 600,
     minHeight: 600,
+    maxWidth: 600,
+    maxHeight: 800,
     show,
     backgroundColor: "white",
     webPreferences: {
