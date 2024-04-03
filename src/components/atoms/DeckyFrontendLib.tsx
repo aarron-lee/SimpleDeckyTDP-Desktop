@@ -14,7 +14,6 @@ import {
   SliderMark,
   SliderThumb,
   SliderTrack,
-  Spacer,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -34,7 +33,7 @@ type SectionProps = {
 
 export const DeckySection: FC<SectionProps> = ({ title, children }) => {
   return (
-    <Box padding={"16px"} margin="16px">
+    <Box padding={"8px"} margin="16px">
       {title && <Heading size="lg">{title}</Heading>}
       <Box>{children}</Box>
     </Box>
@@ -121,7 +120,7 @@ export const DeckySlider: FC<SliderProps> = ({
 
   return (
     <>
-      <Box margin="32px 0">
+      <Box marginBlockStart="32px">
         <FormLabel>
           {label} - {notchLabels ? getLabelText(value) : value}
           {valueSuffix}

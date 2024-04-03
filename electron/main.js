@@ -18,8 +18,8 @@ const createMainWindow = () => {
   const show = !getItem(IS_WINDOW_HIDDEN);
 
   mainWindow = new BrowserWindow({
-    width: 720,
-    height: 720,
+    width: 600,
+    height: 800,
     minWidth: 600,
     minHeight: 600,
     show,
