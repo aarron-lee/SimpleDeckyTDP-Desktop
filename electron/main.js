@@ -45,6 +45,20 @@ const createMainWindow = () => {
 
   createTray();
 
+  tray.on("click", () => {
+    const toggleWindow = () => {
+      const windowIsVisible = mainWindow.isVisible();
+      if (windowIsVisible) {
+        mainWindow.hide();
+        setItem(IS_WINDOW_HIDDEN, true);
+      } else {
+        mainWindow.show();
+        setItem(IS_WINDOW_HIDDEN, false);
+      }
+    };
+    toggleWindow();
+  });
+
   // mainWindow.once("ready-to-show", () => {mainWindow.show()});
 
   mainWindow.on("closed", () => {
