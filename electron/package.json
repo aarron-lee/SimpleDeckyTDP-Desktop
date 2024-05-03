@@ -9,9 +9,9 @@
   "version": "0.0.1",
   "main": "main.js",
   "devDependencies": {
+    "@electron/packager": "^18.3.2",
     "electron": "^28.1.0",
-    "electron-builder": "^24.9.1",
-    "electron-packager": "^17.1.2"
+    "electron-builder": "^24.9.1"
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/electron-builder install-app-deps",
