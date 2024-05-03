@@ -2,11 +2,13 @@ const {
   app,
   BrowserWindow,
   screen: electronScreen,
+  powerMonitor,
   Tray,
   Menu,
   ipcMain,
 } = require("electron");
 const path = require("path");
+const fs = require("fs");
 const { initializeSettings, IS_WINDOW_HIDDEN } = require("./settings");
 
 const { setItem, getItem, getSettings } = initializeSettings(app);
@@ -65,10 +67,53 @@ const createMainWindow = () => {
     mainWindow = null;
   });
 
+  setupPowerMonitor()
+
   ipcMain.on("gamepadButtonPress", (_, buttonName) => {
     handleGamepadButtonPress(mainWindow, buttonName);
   });
 };
+
+function setupPowerMonitor() {
+  powerMonitor.on("resume", () => {
+    const settings = getDeckySettings();
+
+    let tdpProfile = 'default'
+
+    if(settings && settings.enableTdpProfiles) {
+      tdpProfile = 'default-desktop'
+    }
+
+    if (settings && settings.advanced && settings.advanced.forceDisableTdpOnResume === false ) {
+      // set TDP via SDTDP
+      setTimeout(async () => {
+        try {
+          const token = await fetch("http://127.0.0.1:1337/auth/token").then((r) =>
+            r.text()
+          );
+          const response = await fetch(
+            `http://127.0.0.1:1337/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+                Authentication: token,
+              },
+              body: JSON.stringify({
+                args: { gameId: tdpProfile },
+              }),
+            }
+          );
+          return response;
+        }
+        catch (e) {
+          console.log(e)
+        }
+      }, 3000)
+    }
+  });
+}
 
 app.whenReady().then(() => {
   createMainWindow();
@@ -113,6 +158,23 @@ function createContextMenu() {
   ]);
 
   return contextMenu;
+}
+
+function getDeckySettings() {
+  const settingsJsonPath = `${app.getPath('home')}/homebrew/settings/SimpleDeckyTDP/settings.json`;
+
+  try {
+    if (fs.existsSync(settingsJsonPath)) {
+      const rawData = fs.readFileSync(settingsJsonPath);
+
+      const settings = JSON.parse(rawData);
+
+      return settings;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return;
 }
 
 function handleGamepadButtonPress(mainWindow, buttonName) {
