@@ -78,38 +78,10 @@ function setupPowerMonitor() {
   powerMonitor.on("resume", () => {
     const settings = getDeckySettings();
 
-    let tdpProfile = 'default'
-
-    if(settings && settings.enableTdpProfiles) {
-      tdpProfile = 'default-desktop'
-    }
-
     if (settings && settings.advanced && settings.advanced.forceDisableTdpOnResume === false ) {
       // set TDP via SDTDP
       setTimeout(async () => {
-        try {
-          const token = await fetch("http://127.0.0.1:1337/auth/token").then((r) =>
-            r.text()
-          );
-          const response = await fetch(
-            `http://127.0.0.1:1337/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                Authentication: token,
-              },
-              body: JSON.stringify({
-                args: { gameId: tdpProfile },
-              }),
-            }
-          );
-          return response;
-        }
-        catch (e) {
-          console.log(e)
-        }
+        refreshTdp(settings)
       }, 3000)
     }
   });
@@ -175,6 +147,40 @@ function getDeckySettings() {
     console.error(e);
   }
   return;
+}
+
+async function refreshTdp(deckySettings) {
+  const settings = Boolean(deckySettings) ? deckySettings : getDeckySettings();
+
+  let tdpProfile = 'default'
+
+  if(settings && settings.enableTdpProfiles) {
+    tdpProfile = 'default-desktop'
+  }
+
+  try {
+    const token = await fetch("http://127.0.0.1:1337/auth/token").then((r) =>
+      r.text()
+    );
+    const response = await fetch(
+      `http://127.0.0.1:1337/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authentication: token,
+        },
+        body: JSON.stringify({
+          args: { gameId: tdpProfile },
+        }),
+      }
+    );
+    return response;
+  }
+  catch (e) {
+    console.log(e)
+  }
 }
 
 function handleGamepadButtonPress(mainWindow, buttonName) {
