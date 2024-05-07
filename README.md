@@ -17,8 +17,6 @@ Decky Loader and SimpleDeckyTDP already installed
 Note, the Desktop app does not have full feature parity with the Decky Plugin. **Certain features cannot be implemented yet**, such as:
 
 - per-game profiles
-- TDP polling
-- etc
 
 It also should not be used simultaneously with the SimpleDeckyTDP decky plugin, you should only use one or the other at any given time.
 
