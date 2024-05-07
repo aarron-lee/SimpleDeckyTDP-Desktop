@@ -18,7 +18,7 @@ Note, the Desktop app does not have full feature parity with the Decky Plugin. *
 
 - per-game profiles
 
-It also should not be used simultaneously with the SimpleDeckyTDP decky plugin, you should only use one or the other at any given time.
+It also should not be opened and used simultaneously with the SimpleDeckyTDP decky plugin, you should only open one or the other at any given time.
 
 This is because 2-way communication between the plugin and Desktop app is currently not possible.
 
