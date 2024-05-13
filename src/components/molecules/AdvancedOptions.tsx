@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux-modules/store";
 import {
+  AdvancedOption,
   getAdvancedOptionsInfoSelector,
   getSteamPatchEnabledSelector,
   updateAdvancedOption,
@@ -15,6 +16,29 @@ export const useIsSteamPatchEnabled = () => {
   const steamPatchEnabled = useSelector(getSteamPatchEnabledSelector);
 
   return steamPatchEnabled;
+};
+
+const calculateDisabled = (
+  option: AdvancedOption,
+  advancedState: { [k: string]: boolean }
+) => {
+  if (option.disabled) {
+    // there is component disable logic to parse
+    const { disabled } = option;
+
+    if (disabled.ifFalsy) {
+      // ifFalsy = arr of advancedOptions
+      const { ifFalsy } = disabled;
+
+      for (let i = 0; i < ifFalsy.length; i++) {
+        if (!advancedState[ifFalsy[i]]) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 };
 
 const AdvancedOptions = () => {
@@ -54,6 +78,7 @@ const AdvancedOptions = () => {
                       updateAdvancedOption({ statePath, value: enabled })
                     );
                   }}
+                  disabled={calculateDisabled(option, advancedState)}
                 />
               </DeckyRow>
             );

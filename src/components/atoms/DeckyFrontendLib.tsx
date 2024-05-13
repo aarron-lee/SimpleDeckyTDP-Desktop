@@ -46,6 +46,7 @@ type ToggleProps = {
   label: string;
   checked: boolean;
   onChange: any;
+  disabled: boolean;
   description?: string;
   highlightOnFocus?: boolean;
   bottomSeparator?: string;
@@ -56,6 +57,7 @@ export const DeckyToggle: FC<ToggleProps> = ({
   checked,
   onChange,
   description,
+  disabled,
 }) => {
   return (
     <>
@@ -64,6 +66,7 @@ export const DeckyToggle: FC<ToggleProps> = ({
         <HStack spacing="16px">
           <Switch
             isChecked={checked}
+            disabled={disabled}
             onChange={(e) => {
               const value = e.target.checked;
 
