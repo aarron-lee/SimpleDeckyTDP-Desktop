@@ -2,7 +2,7 @@
 
 An desktop GUI/Frontend to the SimpleDeckyTDP Decky Plugin
 
-![app](./img/app.png)
+![app](./img/app1.png)
 
 # Requirements
 
