@@ -6,7 +6,7 @@ An desktop GUI/Frontend to the SimpleDeckyTDP Decky Plugin
 
 Unofficial Decky Loader and SimpleDeckyTDP installed
 
-Unofficial Decky Loader is a fork of Decky with the required functionality for the desktop app, note that this can safely be used alongside regular Decky Loader without issue. They don't interfere with each other.
+[Unofficial Decky Loader](https://github.com/aarron-lee/decky-loader) is a fork of Decky with the required functionality for the desktop app, note that this can safely be used alongside regular Decky Loader without issue. They don't interfere with each other.
 
 # Limitations
 
