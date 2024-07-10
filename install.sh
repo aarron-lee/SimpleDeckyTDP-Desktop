@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-if [[ -d $HOME/.unofficial_homebrew/plugins ]]; then
+if [[ ! -d $HOME/.unofficial_homebrew/plugins ]]; then
   echo "Unofficial decky required. Exiting..."
   exit
 fi
