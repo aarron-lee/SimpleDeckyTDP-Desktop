@@ -67,7 +67,7 @@ const createMainWindow = () => {
     mainWindow = null;
   });
 
-  setupPowerMonitor()
+  setupPowerMonitor();
 
   ipcMain.on("gamepadButtonPress", (_, buttonName) => {
     handleGamepadButtonPress(mainWindow, buttonName);
@@ -78,11 +78,15 @@ function setupPowerMonitor() {
   powerMonitor.on("resume", () => {
     const settings = getDeckySettings();
 
-    if (settings && settings.advanced && settings.advanced.forceDisableTdpOnResume === false ) {
+    if (
+      settings &&
+      settings.advanced &&
+      settings.advanced.forceDisableTdpOnResume === false
+    ) {
       // set TDP via SDTDP
       setTimeout(async () => {
-        refreshTdp(settings)
-      }, 3000)
+        refreshTdp(settings);
+      }, 3000);
     }
   });
 }
@@ -133,7 +137,9 @@ function createContextMenu() {
 }
 
 function getDeckySettings() {
-  const settingsJsonPath = `${app.getPath('home')}/homebrew/settings/SimpleDeckyTDP/settings.json`;
+  const settingsJsonPath = `${app.getPath(
+    "home"
+  )}/homebrew/settings/SimpleDeckyTDP/settings.json`;
 
   try {
     if (fs.existsSync(settingsJsonPath)) {
@@ -152,18 +158,18 @@ function getDeckySettings() {
 async function refreshTdp(deckySettings) {
   const settings = Boolean(deckySettings) ? deckySettings : getDeckySettings();
 
-  let tdpProfile = 'default'
+  let tdpProfile = "default";
 
-  if(settings && settings.enableTdpProfiles) {
-    tdpProfile = 'default-desktop'
+  if (settings && settings.enableTdpProfiles) {
+    tdpProfile = "default-desktop";
   }
 
   try {
-    const token = await fetch("http://127.0.0.1:1337/auth/token").then((r) =>
+    const token = await fetch("http://127.0.0.1:1338/auth/token").then((r) =>
       r.text()
     );
     const response = await fetch(
-      `http://127.0.0.1:1337/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
+      `http://127.0.0.1:1338/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
       {
         method: "POST",
         credentials: "include",
@@ -177,9 +183,8 @@ async function refreshTdp(deckySettings) {
       }
     );
     return response;
-  }
-  catch (e) {
-    console.log(e)
+  } catch (e) {
+    console.log(e);
   }
 }
 
