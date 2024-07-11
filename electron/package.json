@@ -16,7 +16,8 @@
   "scripts": {
     "postinstall": "./node_modules/.bin/electron-builder install-app-deps",
     "start": "./node_modules/.bin/electron .",
-    "build": "./node_modules/.bin/electron-builder build --linux"
+    "build": "./node_modules/.bin/electron-builder build --linux",
+    "reload": "cd .. && npm run electron-build && cd electron && npm run start"
   },
   "build": {
     "appId": "com.aarron-lee.simpledeckytdp-desktop",

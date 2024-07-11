@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "electron-build": "rm -rf ./electron/static/build && mkdir -p ./electron/static/ && vite build && cp -rf ./dist ./electron/static/build && sed -i 's\\/assets\\./assets\\g' ./electron/static/build/index.html",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "reload": "npm run electron-build && cd electron && npm run start"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
