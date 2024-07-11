@@ -15,6 +15,7 @@ Unofficial Decky Loader and SimpleDeckyTDP installed
 Note, the Desktop app does not have full feature parity with the Decky Plugin. **Certain features cannot be implemented**, such as:
 
 - per-game profiles
+- AC TDP Profiles (only works on select devices)
 
 # Installation
 
