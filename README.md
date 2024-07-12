@@ -20,9 +20,9 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 - SMT control
 - CPU Boost control\*
   - note, requires a newer kernel for CPU boost controls
-  - CPU boost controls appear automatically if it's available
+  - CPU boost controls appear automatically if it's available on your device
 - set TDP on AC Power events and suspend-resume events
-  - separate AC Power Profiles supported on select devices only
+  - separate AC Power Profiles supported on select devices only, see [limitations](#limitations) for more info
 - TDP Polling - useful for devices that change TDP in the background
 - Legion Go TDP via WMI calls (allows for TDP control with secure boot, requires acpi_call)
 - ROG Ally TDP via WMI calls (allows for TDP control with secure boot)
@@ -30,9 +30,30 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 
 # Requirements
 
-Unofficial Decky Loader and SimpleDeckyTDP installed
+- ryzenadj installed
+- unofficial decky loader
+- SDTDP decky plugin
 
-[Unofficial Decky Loader](https://github.com/aarron-lee/decky-loader) is a fork I made of Decky with the required functionality for the desktop app, note that this can safely be used alongside regular Decky Loader without issue. They don't interfere with each other.
+### WARNING: This app assumes you already have ryzenadj installed and can be located in your PATH
+
+ChimeraOS, Bazzite Deck Edition, and NobaraOS Deck edition, should already have ryzenadj pre-installed.
+
+To check this, you can run `which ryzenadj` in a terminal/console, which should print out a path to a ryzenadj binary.
+
+e.g.
+
+```
+$ which ryzenadj
+/usr/bin/ryzenadj
+```
+
+If you do not have ryzenadj installed, you will need to get a working copy installed onto your machine.
+
+See [here](#ryzenadj-troubleshooting) for more info on ryzenadj
+
+### Other requirements
+
+[Unofficial Decky Loader](https://github.com/aarron-lee/decky-loader) is a fork I made of Decky with the required functionality for the desktop app. Note that this can safely be used alongside regular Decky Loader without issue, they don't interfere with each other.
 
 # Limitations
 
@@ -46,7 +67,7 @@ Note, the Desktop app does not have full feature parity with the Decky Plugin.
 
 # Installation
 
-If not already installed, install unofficial decky
+If not already installed, install unofficial decky to your device
 
 ```bash
 curl -L https://raw.githubusercontent.com/aarron-lee/decky-loader/main/dist/install_release.sh | sh
@@ -79,6 +100,45 @@ npm run build
 
 # appImage file will be generated in the electron/dist directory
 ```
+
+### Ryzenadj troubleshooting
+
+To test your ryzenadj, try the following:
+
+```
+$ sudo ryzenadj -a 14000 -b 14000 -c 14000
+```
+
+the command above sets 14W TDP. You should see the following if sucessful:
+
+```
+Sucessfully set stapm_limit to 14000
+Sucessfully set fast_limit to 14000
+Sucessfully set slow_limit to 14000
+```
+
+If you don't see the success messages, your ryzenadj is most likely not working or configured for your device.
+
+You can also test by running the following:
+
+```
+$ sudo ryzenadj -i
+```
+
+This should print out a table that looks something like the following:
+
+```
+CPU Family: Rembrandt
+SMU BIOS Interface Version: 18
+Version: v0.13.0
+PM Table Version: 450005
+|        Name         |   Value   |     Parameter      |
+|---------------------|-----------|--------------------|
+| STAPM LIMIT         |     8.000 | stapm-limit        |
+| STAPM VALUE         |     0.062 |                    |
+```
+
+If you see an error, you may need to set `iomem=relaxed` as a boot parameter for your kernel, or disable secure boot.
 
 # Attribution
 
