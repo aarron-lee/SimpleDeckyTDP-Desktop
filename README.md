@@ -15,7 +15,6 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 ## Features
 
 - TDP controls + custom TDP Limits
-  - custom TDP limits
 - Power Governor and Energy Performance Preference controls
 - GPU Controls
 - SMT control
