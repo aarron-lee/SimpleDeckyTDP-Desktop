@@ -19,6 +19,8 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 - TDP controls + custom TDP Limits
 - Power Governor and Energy Performance Preference controls
 - GPU Controls
+- Desktop tray support (AppIndicator)
+  - click the tray icon to hide/show the app
 - SMT control
 - CPU Boost control\*
   - note, requires a newer kernel for CPU boost controls
