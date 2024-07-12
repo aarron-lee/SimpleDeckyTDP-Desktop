@@ -5,8 +5,16 @@ import "./index.css";
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import { setupGamepadEventListener } from "./controller/controllerListener.tsx";
 import theme from "./utils/theme.tsx";
+import {
+  acPowerEventListener,
+  currentGameInfoListener,
+} from "./steamListeners.tsx";
 
 setupGamepadEventListener();
+
+currentGameInfoListener();
+
+acPowerEventListener();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
