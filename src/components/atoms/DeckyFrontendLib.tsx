@@ -47,7 +47,7 @@ type ToggleProps = {
   label: string;
   checked: boolean;
   onChange: any;
-  disabled: boolean;
+  disabled?: boolean;
   description?: string;
   highlightOnFocus?: boolean;
   bottomSeparator?: string;

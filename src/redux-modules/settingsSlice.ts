@@ -568,8 +568,10 @@ function handleAdvancedOptionsEdgeCases(
   statePath: string,
   value: boolean
 ) {
-  if (statePath === AdvancedOptionsEnum.AC_POWER_PROFILES) {
+  if (statePath === AdvancedOptionsEnum.AC_POWER_PROFILES && value == true) {
     set(state, `advanced.${AdvancedOptionsEnum.STEAM_PATCH}`, false);
+    // tdp profiles must be enabled for AC TDP profiles
+    set(state, "enableTdpProfiles", true);
   }
   if (statePath === AdvancedOptionsEnum.STEAM_PATCH) {
     set(state, `advanced.${AdvancedOptionsEnum.AC_POWER_PROFILES}`, false);
