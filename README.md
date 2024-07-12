@@ -10,6 +10,9 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 - [Installation](#install)
 - [Manual Build](#manual-build)
 - [Uninstall Instructions](#uninstall-instructions)
+- [Troubleshooting](#troubleshooting)
+  - [ROG Ally Troubleshooting](#rog-ally-troubleshooting)
+  - [Ryzenadj Troubleshooting](#ryzenadj-troubleshooting)
 - [Attribution](#attribution)
 
 ## Features
@@ -100,6 +103,14 @@ npm run build
 
 # appImage file will be generated in the electron/dist directory
 ```
+
+# Uninstall Instructions
+
+1. delete the appImage via whatever appImage manager you happen to be using
+2. uninstall unofficial decky: `curl -L https://raw.githubusercontent.com/aarron-lee/decky-loader/main/dist/uninstall.sh | sh`
+3. Delete any remaining files `sudo rm $HOME/.unofficial_homebrew`
+
+# Troubleshooting
 
 ### Ryzenadj troubleshooting
 
