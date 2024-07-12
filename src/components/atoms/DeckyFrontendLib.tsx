@@ -18,6 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { store } from "../../redux-modules/store";
 
 // from decky-frontend-lib
 export type NotchLabel = {
@@ -46,7 +47,7 @@ type ToggleProps = {
   label: string;
   checked: boolean;
   onChange: any;
-  disabled: boolean;
+  disabled?: boolean;
   description?: string;
   highlightOnFocus?: boolean;
   bottomSeparator?: string;
@@ -202,13 +203,20 @@ export const DeckyField: FC<FieldProps> = ({ label, children }) => {
 };
 
 export function getCurrentGameId() {
-  return `default`;
+  const state = store.getState();
+
+  if (state.settings.enableTdpProfiles) {
+    return "default-desktop";
+  }
+
+  return "default";
 }
 
 export function getCurrentGameInfo() {
+  const id = getCurrentGameId();
   const results = {
-    id: getCurrentGameId(),
-    displayName: `default`,
+    id,
+    displayName: id,
   };
 
   return results;
