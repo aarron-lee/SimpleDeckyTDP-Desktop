@@ -11,7 +11,6 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 - [Manual Build](#manual-build)
 - [Uninstall Instructions](#uninstall-instructions)
 - [Troubleshooting](#troubleshooting)
-  - [ROG Ally Troubleshooting](#rog-ally-troubleshooting)
   - [Ryzenadj Troubleshooting](#ryzenadj-troubleshooting)
 - [Attribution](#attribution)
 
