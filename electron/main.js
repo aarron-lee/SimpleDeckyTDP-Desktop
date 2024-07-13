@@ -12,7 +12,7 @@ const fs = require("fs");
 const { initializeApi } = require("./deckyApi");
 const { initializeSettings, IS_WINDOW_HIDDEN } = require("./settings");
 
-const { getDeckySettings, apiRequest } = initializeApi(app);
+const { getDeckySettings, apiRequest, getAcPowerStatus } = initializeApi(app);
 const { setItem, getItem, getSettings } = initializeSettings(app);
 
 let mainWindow;
@@ -140,11 +140,15 @@ function createContextMenu() {
 
 async function refreshTdp(deckySettings) {
   const settings = Boolean(deckySettings) ? deckySettings : getDeckySettings();
+  const isOnAcPower = await getAcPowerStatus();
 
   let tdpProfile = "default";
 
   if (settings && settings.enableTdpProfiles) {
     tdpProfile = "default-desktop";
+  }
+  if (settings && settings?.advanced?.acPowerProfiles && isOnAcPower) {
+    tdpProfile = `${tdpProfile}-ac-power`;
   }
 
   const endpoint = "set_values_for_game_id";

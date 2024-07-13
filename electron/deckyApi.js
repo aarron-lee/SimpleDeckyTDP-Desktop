@@ -46,7 +46,37 @@ function initializeApi(app) {
     return;
   }
 
-  return { getDeckySettings, apiRequest };
+  async function getAcPowerStatus() {
+    try {
+      const response = await apiRequest(
+        "supports_custom_ac_power_management",
+        {}
+      );
+
+      const supportsCustomAcPowerManagement = await response.json();
+
+      if (
+        supportsCustomAcPowerManagement?.success &&
+        supportsCustomAcPowerManagement?.result
+      ) {
+        const res = await apiRequest("get_ac_power_status", {});
+
+        const isOnAcPower = await res.json();
+
+        if (isOnAcPower?.success && isOnAcPower?.result === "1") {
+          return true;
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+
+    // false = no AC power
+    return false;
+  }
+
+  return { getDeckySettings, apiRequest, getAcPowerStatus };
 }
 
 module.exports = {
