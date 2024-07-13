@@ -35,3 +35,4 @@ electron/*
 !electron/icon
 !electron/favicon
 !electron/settings.js
+!electron/deckyApi.js

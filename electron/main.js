@@ -9,8 +9,10 @@ const {
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const { initializeApi } = require("./deckyApi");
 const { initializeSettings, IS_WINDOW_HIDDEN } = require("./settings");
 
+const { getDeckySettings, apiRequest } = initializeApi(app);
 const { setItem, getItem, getSettings } = initializeSettings(app);
 
 let mainWindow;
@@ -136,25 +138,6 @@ function createContextMenu() {
   return contextMenu;
 }
 
-function getDeckySettings() {
-  const settingsJsonPath = `${app.getPath(
-    "home"
-  )}/homebrew/settings/SimpleDeckyTDP/settings.json`;
-
-  try {
-    if (fs.existsSync(settingsJsonPath)) {
-      const rawData = fs.readFileSync(settingsJsonPath);
-
-      const settings = JSON.parse(rawData);
-
-      return settings;
-    }
-  } catch (e) {
-    console.error(e);
-  }
-  return;
-}
-
 async function refreshTdp(deckySettings) {
   const settings = Boolean(deckySettings) ? deckySettings : getDeckySettings();
 
@@ -164,28 +147,10 @@ async function refreshTdp(deckySettings) {
     tdpProfile = "default-desktop";
   }
 
-  try {
-    const token = await fetch("http://127.0.0.1:1338/auth/token").then((r) =>
-      r.text()
-    );
-    const response = await fetch(
-      `http://127.0.0.1:1338/plugins/SimpleDeckyTDP/methods/set_values_for_game_id`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authentication: token,
-        },
-        body: JSON.stringify({
-          args: { gameId: tdpProfile },
-        }),
-      }
-    );
-    return response;
-  } catch (e) {
-    console.log(e);
-  }
+  const endpoint = "set_values_for_game_id";
+  const payload = { gameId: tdpProfile };
+
+  return await apiRequest(endpoint, payload);
 }
 
 function handleGamepadButtonPress(mainWindow, buttonName) {
