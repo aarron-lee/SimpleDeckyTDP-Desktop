@@ -34,11 +34,13 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 
 # Requirements
 
-- ryzenadj installed
+- ryzenadj installed for TDP control
 - unofficial decky loader
 - SDTDP decky plugin
 
 ### WARNING: This app assumes you already have ryzenadj installed and can be located in your PATH
+
+You can still run the app without ryzenadj, but TDP controls will not work, and should be disabled.
 
 ChimeraOS, Bazzite Deck Edition, and NobaraOS Deck edition, should already have ryzenadj pre-installed.
 
