@@ -70,6 +70,9 @@ Note, the Desktop app does not have full feature parity with the Decky Plugin.
 - per-game profiles
 - universal AC TDP Profiles
   - the Desktop app only supports AC TDP profiles on select devices
+    - currently supported devices:
+      - Legion Go
+      - Minisforum V3
 
 # Installation
 
