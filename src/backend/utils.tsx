@@ -1,5 +1,4 @@
-import { TdpProfiles } from "../redux-modules/settingsSlice";
-import serverApi from "./serverApi";
+import { callable, call } from "./deckyApi";
 
 export enum AdvancedOptionsEnum {
   ENABLE_TDP_CONTROL = "enableTdpControl",
@@ -10,6 +9,7 @@ export enum AdvancedOptionsEnum {
   MAX_TDP_ON_RESUME = "maxTdpOnResume",
   AC_POWER_PROFILES = "acPowerProfiles",
   FORCE_DISABLE_TDP_ON_RESUME = "forceDisableTdpOnResume",
+  USE_PLATFORM_PROFILE = "platformProfile",
 }
 
 export enum RogAllyAdvancedOptions {
@@ -34,7 +34,9 @@ export const DesktopAdvancedOptions = [
 ] as string[];
 
 export enum GpuModes {
-  DEFAULT = "DEFAULT",
+  BATTERY = "BATTERY",
+  BALANCE = "BALANCE",
+  PERFORMANCE = "PERFORMANCE",
   RANGE = "RANGE",
   FIXED = "FIXED",
 }
@@ -49,6 +51,8 @@ export enum ServerAPIMethods {
   PERSIST_TDP = "persist_tdp",
   PERSIST_GPU = "persist_gpu",
   PERSIST_SMT = "persist_smt",
+  ON_SUSPEND = "on_suspend",
+  OTA_UPDATE = "ota_update",
   PERSIST_CPU_BOOST = "persist_cpu_boost",
   SET_VALUES_FOR_GAME_ID = "set_values_for_game_id",
   SET_STEAM_PATCH_VALUES_FOR_GAME_ID = "set_steam_patch_values_for_game_id",
@@ -58,217 +62,130 @@ export enum ServerAPIMethods {
   GET_IS_STEAM_RUNNING = "is_steam_running",
   GET_SUPPORTS_CUSTOM_AC_POWER_MANAGEMENT = "supports_custom_ac_power_management",
   GET_CURRENT_AC_POWER_STATUS = "get_ac_power_status",
+  SET_MAX_TDP = "set_max_tdp",
+  GET_LATEST_VERSION_NUM = "get_latest_version_num",
 }
 
-export const createLogInfo = (serverAPI: any) => async (info: any) => {
-  await serverAPI.callPluginMethod(ServerAPIMethods.LOG_INFO, {
-    info,
+export const getSettings = callable(ServerAPIMethods.GET_SETTINGS);
+export const setSetting = ({ name, value }: { name: string; value: any }) =>
+  call(ServerAPIMethods.SET_SETTING, {
+    name,
+    value,
+  });
+export const onSuspend = callable(ServerAPIMethods.ON_SUSPEND);
+
+export const setPollTdp = ({ currentGameId }: { currentGameId: string }) =>
+  call(ServerAPIMethods.POLL_TDP, { currentGameId });
+export const setMaxTdp = callable(ServerAPIMethods.SET_MAX_TDP);
+export const isSteamRunning = callable(ServerAPIMethods.GET_IS_STEAM_RUNNING);
+
+export const logInfo = ({ info }: { info: any }) => {
+  const logger = callable(ServerAPIMethods.LOG_INFO);
+  logger(info);
+};
+
+export const saveTdpProfiles = ({
+  tdpProfiles,
+  currentGameId,
+  advanced,
+}: {
+  tdpProfiles: any;
+  currentGameId: any;
+  advanced: any;
+}) => call(ServerAPIMethods.SAVE_TDP, { tdpProfiles, currentGameId, advanced });
+
+export const getLatestVersionNum = callable(
+  ServerAPIMethods.GET_LATEST_VERSION_NUM
+);
+
+export const otaUpdate = callable(ServerAPIMethods.OTA_UPDATE);
+
+export const getPowerControlInfo = callable(
+  ServerAPIMethods.GET_POWER_CONTROL_INFO
+);
+
+export const getSupportsCustomAcPower = callable(
+  ServerAPIMethods.GET_SUPPORTS_CUSTOM_AC_POWER_MANAGEMENT
+);
+
+export const getCurrentAcPowerStatus = callable(
+  ServerAPIMethods.GET_CURRENT_AC_POWER_STATUS
+);
+
+export const setPowerGovernor = ({
+  powerGovernorInfo,
+  gameId,
+}: {
+  powerGovernorInfo: any;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.SET_POWER_GOVERNOR, { powerGovernorInfo, gameId });
+};
+
+export const setEpp = ({
+  eppInfo,
+  gameId,
+}: {
+  eppInfo: any;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.SET_EPP, { eppInfo, gameId });
+};
+
+export const persistTdp = ({
+  tdp,
+  gameId,
+}: {
+  tdp: number;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.PERSIST_TDP, { tdp, gameId });
+};
+
+export const setValuesForGameId = ({ gameId }: { gameId: string }) => {
+  call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, { gameId });
+};
+
+export const setSteamPatchValuesForGameId = ({
+  gameId,
+}: {
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, { gameId });
+};
+
+export const persistGpu = ({
+  minGpuFrequency,
+  maxGpuFrequency,
+  gameId,
+}: {
+  minGpuFrequency: number;
+  maxGpuFrequency: number;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.PERSIST_GPU, {
+    minGpuFrequency,
+    maxGpuFrequency,
+    gameId,
   });
 };
 
-export const createSetSetting =
-  (serverAPI: any) =>
-  async ({ fieldName, fieldValue }: { fieldName: string; fieldValue: any }) =>
-    await serverAPI.callPluginMethod(ServerAPIMethods.SET_SETTING, {
-      name: fieldName,
-      value: fieldValue,
-    });
-
-export const createGetSettings = (serverAPI: any) => async () => {
-  return await serverAPI.callPluginMethod(ServerAPIMethods.GET_SETTINGS, {});
+export const persistSmt = ({
+  smt,
+  gameId,
+}: {
+  smt: boolean;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.PERSIST_SMT, { smt, gameId });
 };
 
-export const createGetIsSteamRunning = (serverAPI: any) => async () => {
-  return await serverAPI.callPluginMethod(
-    ServerAPIMethods.GET_IS_STEAM_RUNNING,
-    {}
-  );
-};
-
-export const createSaveTdp =
-  (serverAPI: any) => async (gameId: string, tdp: number) => {
-    const tdpProfiles = {
-      [gameId]: {
-        tdp,
-      },
-    };
-
-    return await serverAPI.callPluginMethod(ServerAPIMethods.SAVE_TDP, {
-      tdpProfiles,
-      currentGameId: gameId,
-    });
-  };
-
-export const createSaveTdpProfiles =
-  (serverAPI: any) =>
-  async (tdpProfiles: TdpProfiles, currentGameId: string, advanced: any) => {
-    return await serverAPI.callPluginMethod(ServerAPIMethods.SAVE_TDP, {
-      tdpProfiles,
-      currentGameId,
-      advanced,
-    });
-  };
-
-export const createPollTdp =
-  (serverAPI: any) => async (currentGameId: string) => {
-    return await serverAPI.callPluginMethod(ServerAPIMethods.POLL_TDP, {
-      currentGameId,
-    });
-  };
-
-export const getLatestVersionNum = async (serverApi: any) => {
-  const { result } = await serverApi.fetchNoCors(
-    "https://raw.githubusercontent.com/aarron-lee/SimpleDeckyTDP/main/package.json",
-    { method: "GET" }
-  );
-
-  //@ts-ignore
-  const body = result.body as string;
-  if (body && typeof body === "string") {
-    return JSON.parse(body)["version"];
-  }
-  return "";
-};
-
-export const otaUpdate = async (serverApi: any) => {
-  return serverApi.callPluginMethod("ota_update", {});
-};
-
-export const createServerApiHelpers = (serverAPI: any) => {
-  return {
-    getSettings: createGetSettings(serverAPI),
-    setSetting: createSetSetting(serverAPI),
-    logInfo: createLogInfo(serverAPI),
-    saveTdp: createSaveTdp(serverAPI),
-    setPollTdp: createPollTdp(serverAPI),
-    saveTdpProfiles: createSaveTdpProfiles(serverAPI),
-    isSteamRunning: createGetIsSteamRunning(serverAPI),
-  };
-};
-
-export const getServerApi = () => {
-  return serverApi;
-};
-
-export const getLogInfo = () => {
-  if (serverApi) {
-    const logInfo = createLogInfo(serverApi);
-    return logInfo;
-  } else {
-    return () => {};
-  }
-};
-
-export const getPowerControlInfo = () => {
-  return serverApi?.callPluginMethod(
-    ServerAPIMethods.GET_POWER_CONTROL_INFO,
-    {}
-  );
-};
-
-export const getSupportsCustomAcPower = () => {
-  return serverApi?.callPluginMethod(
-    ServerAPIMethods.GET_SUPPORTS_CUSTOM_AC_POWER_MANAGEMENT,
-    {}
-  );
-};
-
-export const getCurrentAcPowerStatus = () => {
-  return serverApi?.callPluginMethod(
-    ServerAPIMethods.GET_CURRENT_AC_POWER_STATUS,
-    {}
-  );
-};
-
-export const setPowerGovernor = (powerGovernorInfo: any, gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.SET_POWER_GOVERNOR, {
-      powerGovernorInfo,
-      gameId,
-    });
-  }
-};
-
-export const setEpp = (eppInfo: any, gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.SET_EPP, {
-      eppInfo,
-      gameId,
-    });
-  }
-};
-
-export const setPollTdp = (gameId: string) => {
-  if (serverApi) {
-    const pollTdp = createPollTdp(serverApi);
-    pollTdp(gameId);
-  }
-};
-
-export const persistTdp = (tdp: number, gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.PERSIST_TDP, {
-      tdp,
-      gameId,
-    });
-  }
-};
-
-export const setValuesForGameId = (gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, {
-      gameId,
-    });
-  }
-};
-
-export const setSteamPatchValuesForGameId = (gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(
-      ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID,
-      {
-        gameId,
-      }
-    );
-  }
-};
-
-export const persistGpu = (
-  minGpuFrequency: number,
-  maxGpuFrequency: number,
-  gameId: string
-) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.PERSIST_GPU, {
-      minGpuFrequency,
-      maxGpuFrequency,
-      gameId,
-    });
-  }
-};
-
-export const persistSmt = (smt: boolean, gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.PERSIST_SMT, {
-      smt,
-      gameId,
-    });
-  }
-};
-
-export const persistCpuBoost = (cpuBoost: boolean, gameId: string) => {
-  if (serverApi) {
-    serverApi.callPluginMethod(ServerAPIMethods.PERSIST_CPU_BOOST, {
-      cpuBoost,
-      gameId,
-    });
-  }
-};
-
-export const logInfo = (info: any) => {
-  if (serverApi) {
-    const logger = createLogInfo(serverApi);
-    const s = getServerApi();
-    s && logger(info);
-  }
+export const persistCpuBoost = ({
+  cpuBoost,
+  gameId,
+}: {
+  cpuBoost: boolean;
+  gameId: string;
+}) => {
+  call(ServerAPIMethods.PERSIST_CPU_BOOST, { cpuBoost, gameId });
 };
