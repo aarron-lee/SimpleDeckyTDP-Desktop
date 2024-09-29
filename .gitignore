@@ -36,3 +36,4 @@ electron/*
 !electron/favicon
 !electron/settings.js
 !electron/pluginApi.js
+!electron/tag_release.sh
