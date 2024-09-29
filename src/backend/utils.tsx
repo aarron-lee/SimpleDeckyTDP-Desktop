@@ -1,4 +1,5 @@
 import { callable, call } from "./deckyApi";
+import { IS_DESKTOP } from "../components/atoms/DeckyFrontendLib";
 
 export enum AdvancedOptionsEnum {
   ENABLE_TDP_CONTROL = "enableTdpControl",
@@ -67,21 +68,27 @@ export enum ServerAPIMethods {
 }
 
 export const getSettings = callable(ServerAPIMethods.GET_SETTINGS);
-export const setSetting = ({ name, value }: { name: string; value: any }) =>
-  call(ServerAPIMethods.SET_SETTING, {
-    name,
-    value,
-  });
+export const setSetting = ({ name, value }: { name: string; value: any }) => {
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SET_SETTING, { name, value });
+  }
+
+  // return call(ServerAPIMethods.SET_SETTING, name, value);
+};
 export const onSuspend = callable(ServerAPIMethods.ON_SUSPEND);
 
-export const setPollTdp = ({ currentGameId }: { currentGameId: string }) =>
-  call(ServerAPIMethods.POLL_TDP, { currentGameId });
+export const setPollTdp = ({ currentGameId }: { currentGameId: string }) => {
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.POLL_TDP, { currentGameId });
+  }
+
+  // return call(ServerAPIMethods.POLL_TDP, currentGameId);
+};
 export const setMaxTdp = callable(ServerAPIMethods.SET_MAX_TDP);
 export const isSteamRunning = callable(ServerAPIMethods.GET_IS_STEAM_RUNNING);
 
 export const logInfo = ({ info }: { info: any }) => {
-  const logger = callable(ServerAPIMethods.LOG_INFO);
-  logger(info);
+  return call(ServerAPIMethods.LOG_INFO, { info });
 };
 
 export const saveTdpProfiles = ({
@@ -92,7 +99,16 @@ export const saveTdpProfiles = ({
   tdpProfiles: any;
   currentGameId: any;
   advanced: any;
-}) => call(ServerAPIMethods.SAVE_TDP, { tdpProfiles, currentGameId, advanced });
+}) => {
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SAVE_TDP, {
+      tdpProfiles,
+      currentGameId,
+      advanced,
+    });
+  }
+  // return call(ServerAPIMethods.SAVE_TDP, tdpProfiles, currentGameId, advanced);
+};
 
 export const getLatestVersionNum = callable(
   ServerAPIMethods.GET_LATEST_VERSION_NUM
@@ -119,7 +135,14 @@ export const setPowerGovernor = ({
   powerGovernorInfo: any;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.SET_POWER_GOVERNOR, { powerGovernorInfo, gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SET_POWER_GOVERNOR, {
+      powerGovernorInfo,
+      gameId,
+    });
+  }
+
+  // return call(ServerAPIMethods.SET_POWER_GOVERNOR, powerGovernorInfo, gameId);
 };
 
 export const setEpp = ({
@@ -129,7 +152,11 @@ export const setEpp = ({
   eppInfo: any;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.SET_EPP, { eppInfo, gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SET_EPP, { eppInfo, gameId });
+  }
+
+  // return call(ServerAPIMethods.SET_EPP, eppInfo, gameId);
 };
 
 export const persistTdp = ({
@@ -139,11 +166,19 @@ export const persistTdp = ({
   tdp: number;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.PERSIST_TDP, { tdp, gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.PERSIST_TDP, { tdp, gameId });
+  }
+
+  // return call(ServerAPIMethods.PERSIST_TDP, tdp, gameId);
 };
 
 export const setValuesForGameId = ({ gameId }: { gameId: string }) => {
-  call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, { gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, { gameId });
+  }
+
+  // return call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, gameId);
 };
 
 export const setSteamPatchValuesForGameId = ({
@@ -151,7 +186,13 @@ export const setSteamPatchValuesForGameId = ({
 }: {
   gameId: string;
 }) => {
-  call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, { gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, {
+      gameId,
+    });
+  }
+
+  // return call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, gameId);
 };
 
 export const persistGpu = ({
@@ -163,11 +204,20 @@ export const persistGpu = ({
   maxGpuFrequency: number;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.PERSIST_GPU, {
-    minGpuFrequency,
-    maxGpuFrequency,
-    gameId,
-  });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.PERSIST_GPU, {
+      minGpuFrequency,
+      maxGpuFrequency,
+      gameId,
+    });
+  }
+
+  // return call(
+  //   ServerAPIMethods.PERSIST_GPU,
+  //   minGpuFrequency,
+  //   maxGpuFrequency,
+  //   gameId
+  // );
 };
 
 export const persistSmt = ({
@@ -177,7 +227,14 @@ export const persistSmt = ({
   smt: boolean;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.PERSIST_SMT, { smt, gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.PERSIST_SMT, {
+      smt,
+      gameId,
+    });
+  }
+
+  // return call(ServerAPIMethods.PERSIST_SMT, smt, gameId);
 };
 
 export const persistCpuBoost = ({
@@ -187,5 +244,9 @@ export const persistCpuBoost = ({
   cpuBoost: boolean;
   gameId: string;
 }) => {
-  call(ServerAPIMethods.PERSIST_CPU_BOOST, { cpuBoost, gameId });
+  if (IS_DESKTOP) {
+    return call(ServerAPIMethods.PERSIST_CPU_BOOST, { cpuBoost, gameId });
+  }
+
+  // return call(ServerAPIMethods.PERSIST_CPU_BOOST, cpuBoost, gameId);
 };

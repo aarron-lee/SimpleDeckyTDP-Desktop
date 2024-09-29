@@ -20,6 +20,8 @@ import {
 import { FC } from "react";
 import { store } from "../../redux-modules/store";
 
+export const IS_DESKTOP = true;
+
 // from decky-frontend-lib
 export type NotchLabel = {
   notchIndex: number;
