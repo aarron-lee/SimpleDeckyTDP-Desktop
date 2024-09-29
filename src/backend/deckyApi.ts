@@ -47,6 +47,7 @@ export const call = (serverApiMethod: string, args: { [key: string]: any }) => {
   return serverAPI.callPluginMethod(serverApiMethod, args);
 };
 
-export function callable(serverApiMethod: string): any | undefined {
-  return serverAPI.callPluginMethod(serverApiMethod, {});
-}
+export const callable = (serverApiMethod: string) =>
+  function (): any | undefined {
+    return serverAPI.callPluginMethod(serverApiMethod, {});
+  };

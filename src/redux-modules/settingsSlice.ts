@@ -10,7 +10,7 @@ import {
   PowerGovernorOption,
 } from "../utils/constants";
 import { RootState } from "./store";
-import { AdvancedOptionsEnum, GpuModes, logInfo } from "../backend/utils";
+import { AdvancedOptionsEnum, GpuModes } from "../backend/utils";
 
 type Partial<T> = {
   [P in keyof T]?: T[P];
@@ -72,6 +72,7 @@ export interface SettingsState extends TdpRangeState, PollState, GpuState {
   steamPatchDefaultTdp: number;
   pluginVersionNum: string;
   supportsCustomAcPowerManagement?: boolean;
+  cpuVendor?: string;
   isAcPower?: boolean;
 }
 
@@ -94,7 +95,7 @@ const initialState: SettingsState = {
       tdp: DEFAULT_START_TDP,
       cpuBoost: true,
       smt: true,
-      gpuMode: GpuModes.DEFAULT,
+      gpuMode: GpuModes.BALANCE,
       minGpuFrequency: undefined,
       maxGpuFrequency: undefined,
       fixedGpuFrequency: undefined,
@@ -118,7 +119,6 @@ export const settingsSlice = createSlice({
       if (event === 1) {
         state.isAcPower = false;
       }
-      // logInfo(state.isAcPower);
     },
     setReduxTdp: (state, action: PayloadAction<number>) => {
       const tdp = action.payload;
@@ -196,8 +196,10 @@ export const settingsSlice = createSlice({
         pluginVersionNum,
         steamPatchDefaultTdp,
         supportsCustomAcPowerManagement,
+        cpuVendor,
       } = action.payload;
       state.initialLoad = false;
+      state.cpuVendor = cpuVendor;
       state.supportsCustomAcPowerManagement = supportsCustomAcPowerManagement;
       state.minTdp = action.payload.minTdp || MIN_TDP_RANGE;
       state.maxTdp = action.payload.maxTdp || 15;
@@ -558,6 +560,8 @@ export const getPowerControlInfoSelector =
     return { epp, powerGovernor };
   };
 
+export const cpuVendorSelector = (state: RootState) => state.settings.cpuVendor;
+
 export const acPowerSelector = (state: RootState) => state.settings.isAcPower;
 
 export const supportsCustomAcPowerSelector = (state: RootState) =>
@@ -568,6 +572,18 @@ function handleAdvancedOptionsEdgeCases(
   statePath: string,
   value: boolean
 ) {
+  if (statePath === AdvancedOptionsEnum.USE_PLATFORM_PROFILE && value) {
+    set(
+      state,
+      `advanced.${AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING}`,
+      false
+    );
+  }
+  if (statePath === AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING && value) {
+    if (typeof state?.advanced?.platformProfile === "boolean") {
+      set(state, `advanced.${AdvancedOptionsEnum.USE_PLATFORM_PROFILE}`, false);
+    }
+  }
   if (statePath === AdvancedOptionsEnum.AC_POWER_PROFILES) {
     set(state, `advanced.${AdvancedOptionsEnum.STEAM_PATCH}`, false);
   }
