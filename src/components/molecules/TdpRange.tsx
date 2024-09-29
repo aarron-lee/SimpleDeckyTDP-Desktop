@@ -6,12 +6,19 @@ import { useIsSteamPatchEnabled } from "./AdvancedOptions";
 import { MIN_TDP_RANGE } from "../../utils/constants";
 import ErrorBoundary from "../ErrorBoundary";
 import { DeckyRow, DeckySection } from "../atoms/DeckyFrontendLib";
+import useIsIntel from "../../hooks/useIsIntel";
 
 const TdpRange = () => {
   const [minTdp, setMinTdp] = useMinTdp();
   const [maxTdp, setMaxTdp] = useMaxTdp();
 
   const steamPatchEnabled = useIsSteamPatchEnabled();
+  const isIntel = useIsIntel();
+
+  if (isIntel) {
+    // intel provides TDP limit values, custom TDP range is unnecessary
+    return null;
+  }
 
   const title = steamPatchEnabled ? "Steam TDP Slider range" : "TDP Range";
 
