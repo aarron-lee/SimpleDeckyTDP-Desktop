@@ -9,7 +9,7 @@ const {
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
-const { initializeApi } = require("./deckyApi");
+const { initializeApi } = require("./pluginApi");
 const { initializeSettings, IS_WINDOW_HIDDEN } = require("./settings");
 
 const { getDeckySettings, apiRequest, getAcPowerStatus } = initializeApi(app);
