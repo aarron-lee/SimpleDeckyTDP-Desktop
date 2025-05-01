@@ -45,10 +45,12 @@ export enum LegionGoAdvancedOptions {
 export const DesktopAdvancedOptions = [
   AdvancedOptionsEnum.ENABLE_TDP_CONTROL,
   AdvancedOptionsEnum.ENABLE_GPU_CONTROL,
+  AdvancedOptionsEnum.ENABLE_APU_SLOW_LIMIT,
   AdvancedOptionsEnum.ENABLE_POWER_CONTROL,
   AdvancedOptionsEnum.AC_POWER_PROFILES,
   AdvancedOptionsEnum.FORCE_DISABLE_TDP_ON_RESUME,
   AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING,
+  AdvancedOptionsEnum.ENABLE_AUTOMATIC_CPU_MANAGEMENT,
   LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
   RogAllyAdvancedOptions.USE_PLATFORM_PROFILE,
   RogAllyAdvancedOptions.USE_WMI,
