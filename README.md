@@ -34,28 +34,8 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 
 # Requirements
 
-- ryzenadj installed for TDP control
 - unofficial decky loader
 - SDTDP decky plugin
-
-### WARNING: This app assumes you already have ryzenadj installed and can be located in your PATH
-
-You can still run the app without ryzenadj, but TDP controls will not work, and should be disabled.
-
-ChimeraOS, Bazzite Deck Edition, and NobaraOS Deck edition, should already have ryzenadj pre-installed.
-
-To check this, you can run `which ryzenadj` in a terminal/console, which should print out a path to a ryzenadj binary.
-
-e.g.
-
-```
-$ which ryzenadj
-/usr/bin/ryzenadj
-```
-
-If you do not have ryzenadj installed, you will need to get a working copy installed onto your machine.
-
-See [here](#ryzenadj-troubleshooting) for more info on ryzenadj
 
 ### Other requirements
 
@@ -65,15 +45,6 @@ See [here](#ryzenadj-troubleshooting) for more info on ryzenadj
 
 Note, the Desktop app does not have full feature parity with the Decky Plugin.
 
-**Certain features cannot be implemented**, such as:
-
-- per-game profiles
-- universal AC TDP Profiles
-  - the Desktop app only supports AC TDP profiles on select devices
-    - currently supported devices:
-      - Legion Go
-      - Minisforum V3
-
 # Installation
 
 If not already installed, install unofficial decky to your device
@@ -82,13 +53,11 @@ If not already installed, install unofficial decky to your device
 curl -L https://raw.githubusercontent.com/aarron-lee/decky-loader/main/dist/install_release.sh | sh
 ```
 
-Then install SimpleDeckyTDP to unofficial Decky
+Then install SimpleDeckyTDP-Desktop and add the Desktop app
 
 ```bash
 curl -L https://raw.githubusercontent.com/aarron-lee/SimpleDeckyTDP-Desktop/main/install.sh | sh
 ```
-
-Finally, download the latest AppImage from [releases](https://github.com/aarron-lee/SimpleDeckyTDP-Desktop/releases) and install it via an AppImage manager like [GearLever](https://flathub.org/apps/it.mijorus.gearlever), AppImageLauncher, etc
 
 # Manual Build
 
@@ -115,47 +84,6 @@ npm run build
 1. delete the appImage via whatever appImage manager you happen to be using
 2. uninstall unofficial decky: `curl -L https://raw.githubusercontent.com/aarron-lee/decky-loader/main/dist/uninstall.sh | sh`
 3. Delete any remaining files `sudo rm $HOME/.unofficial_homebrew`
-
-# Troubleshooting
-
-### Ryzenadj troubleshooting
-
-To test your ryzenadj, try the following:
-
-```
-$ sudo ryzenadj -a 14000 -b 14000 -c 14000
-```
-
-the command above sets 14W TDP. You should see the following if sucessful:
-
-```
-Sucessfully set stapm_limit to 14000
-Sucessfully set fast_limit to 14000
-Sucessfully set slow_limit to 14000
-```
-
-If you don't see the success messages, your ryzenadj is most likely not working or configured for your device.
-
-You can also test by running the following:
-
-```
-$ sudo ryzenadj -i
-```
-
-This should print out a table that looks something like the following:
-
-```
-CPU Family: Rembrandt
-SMU BIOS Interface Version: 18
-Version: v0.13.0
-PM Table Version: 450005
-|        Name         |   Value   |     Parameter      |
-|---------------------|-----------|--------------------|
-| STAPM LIMIT         |     8.000 | stapm-limit        |
-| STAPM VALUE         |     0.062 |                    |
-```
-
-If you see an error, you may need to set `iomem=relaxed` as a boot parameter for your kernel, or disable secure boot.
 
 # Attribution
 
