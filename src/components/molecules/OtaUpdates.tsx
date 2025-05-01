@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { getLatestVersionNum, otaUpdate } from "../../backend/utils";
 import { useSelector } from "react-redux";
 import { getInstalledVersionNumSelector } from "../../redux-modules/settingsSlice";
-import { selectScalingDriver } from "../../redux-modules/uiSlice";
+import {
+  selectDeviceName,
+  selectScalingDriver,
+} from "../../redux-modules/uiSlice";
 import {
   DeckyButton,
   DeckyField,
@@ -12,8 +15,11 @@ import {
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");
+  const [updateInProgress, setUpdateInProgress] = useState(false);
+
   const installedVersionNum = useSelector(getInstalledVersionNumSelector);
   const scalingDriver = useSelector(selectScalingDriver);
+  const deviceName = useSelector(selectDeviceName);
 
   const isUpdated =
     installedVersionNum === latestVersionNum && Boolean(latestVersionNum);
@@ -56,6 +62,13 @@ const OtaUpdates = () => {
           </DeckyField>
         </DeckyRow>
       )}
+      {Boolean(deviceName) && (
+        <DeckyRow>
+          <DeckyField label={"Device Name"} bottomSeparator="none">
+            {deviceName}
+          </DeckyField>
+        </DeckyRow>
+      )}
       {Boolean(latestVersionNum) && (
         <>
           <DeckyRow>
@@ -65,8 +78,10 @@ const OtaUpdates = () => {
           </DeckyRow>
           <DeckyRow>
             <DeckyButton
-              onClick={() => {
-                otaUpdate();
+              onClick={async () => {
+                setUpdateInProgress(true);
+                await otaUpdate();
+                setUpdateInProgress(false);
               }}
               style={{
                 width: "100%",
@@ -76,7 +91,7 @@ const OtaUpdates = () => {
               }}
               layout={"below"}
             >
-              {buttonText}
+              {updateInProgress ? "Updating..." : buttonText}
             </DeckyButton>
           </DeckyRow>
         </>
