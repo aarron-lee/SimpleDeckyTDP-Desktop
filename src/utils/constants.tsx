@@ -23,7 +23,9 @@ export type PowerControlInfo = {
   powerGovernorOptions: PowerGovernorOption[];
   scalingDriver: string;
   supportsCpuBoost: boolean;
+  supportsSmt: boolean;
   pstateStatus?: string;
+  deviceName?: string;
 };
 
 export type EppOption =
@@ -82,6 +84,9 @@ addReverseMapping(PowerGovernorOptions);
 addReverseMapping(EppOptions);
 
 export const DEFAULT_POWER_CONTROLS = {
+  [ScalingDrivers.INTEL_CPUFREQ]: {
+    powerGovernor: PowerGovernorOptions.POWER_SAVE,
+  },
   [ScalingDrivers.INTEL_PSTATE]: {
     epp: EppOptions.BALANCE_POWER_SAVE,
     powerGovernor: PowerGovernorOptions.POWER_SAVE,
