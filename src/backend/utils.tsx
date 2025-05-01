@@ -1,21 +1,41 @@
 import { callable, call } from "./deckyApi";
 import { IS_DESKTOP } from "../components/atoms/DeckyFrontendLib";
 
+export enum Devices {
+  LEGION_GO = "83E1",
+  ROG_ALLY = "ROG Ally RC71",
+  ROG_ALLY_X = "ROG Ally X RC72",
+  MINISFORUM_V3 = "V3",
+  GPD_WM2 = "G1619-04",
+  GPD_WIN4 = "G1618-04",
+  ASUS_FLOW_Z13 = "ROG Flow Z13 GZ302EA_GZ302EA",
+  ASUS_FLOW_Z13_SHORT = "ROG Flow Z13 GZ302",
+}
+
 export enum AdvancedOptionsEnum {
   ENABLE_TDP_CONTROL = "enableTdpControl",
   ENABLE_GPU_CONTROL = "enableGpuControl",
+  ENABLE_APU_SLOW_LIMIT = "enableApuSlowLimit",
   STEAM_PATCH = "steamPatch",
   ENABLE_POWER_CONTROL = "enablePowercontrol",
   ENABLE_BACKGROUND_POLLING = "enableBackgroundPolling",
+  ENABLE_AUTOMATIC_CPU_MANAGEMENT = "enableAutomaticEppManagement",
   MAX_TDP_ON_RESUME = "maxTdpOnResume",
+  MAX_TDP_ON_GAME_PROFILE_CHANGE = "maxTdpOnGameProfileChange",
   AC_POWER_PROFILES = "acPowerProfiles",
   FORCE_DISABLE_TDP_ON_RESUME = "forceDisableTdpOnResume",
   USE_PLATFORM_PROFILE = "platformProfile",
 }
 
+export enum AdvancedOptionsType {
+  BOOLEAN = "boolean",
+  NUMBER_RANGE = "number_range",
+}
+
 export enum RogAllyAdvancedOptions {
   USE_PLATFORM_PROFILE = "platformProfile",
   USE_WMI = "useWmi",
+  USE_EXTREME_POWERSAVE = "useExtremePowersave",
 }
 
 export enum LegionGoAdvancedOptions {
@@ -32,12 +52,12 @@ export const DesktopAdvancedOptions = [
   LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
   RogAllyAdvancedOptions.USE_PLATFORM_PROFILE,
   RogAllyAdvancedOptions.USE_WMI,
+  RogAllyAdvancedOptions.USE_EXTREME_POWERSAVE,
 ] as string[];
 
 export enum GpuModes {
   BATTERY = "BATTERY",
   BALANCE = "BALANCE",
-  PERFORMANCE = "PERFORMANCE",
   RANGE = "RANGE",
   FIXED = "FIXED",
 }
@@ -67,13 +87,13 @@ export enum ServerAPIMethods {
   GET_LATEST_VERSION_NUM = "get_latest_version_num",
 }
 
-export const getSettings = callable(ServerAPIMethods.GET_SETTINGS);
+export const getSettings = callable<[], any>(ServerAPIMethods.GET_SETTINGS);
 export const setSetting = ({ name, value }: { name: string; value: any }) => {
   if (IS_DESKTOP) {
     return call(ServerAPIMethods.SET_SETTING, { name, value });
   }
 
-  // return call(ServerAPIMethods.SET_SETTING, name, value);
+  return call(ServerAPIMethods.SET_SETTING, name, value);
 };
 export const onSuspend = callable(ServerAPIMethods.ON_SUSPEND);
 
@@ -82,7 +102,7 @@ export const setPollTdp = ({ currentGameId }: { currentGameId: string }) => {
     return call(ServerAPIMethods.POLL_TDP, { currentGameId });
   }
 
-  // return call(ServerAPIMethods.POLL_TDP, currentGameId);
+  return call(ServerAPIMethods.POLL_TDP, currentGameId);
 };
 export const setMaxTdp = callable(ServerAPIMethods.SET_MAX_TDP);
 export const isSteamRunning = callable(ServerAPIMethods.GET_IS_STEAM_RUNNING);
@@ -107,7 +127,7 @@ export const saveTdpProfiles = ({
       advanced,
     });
   }
-  // return call(ServerAPIMethods.SAVE_TDP, tdpProfiles, currentGameId, advanced);
+  return call(ServerAPIMethods.SAVE_TDP, tdpProfiles, currentGameId, advanced);
 };
 
 export const getLatestVersionNum = callable(
@@ -142,7 +162,7 @@ export const setPowerGovernor = ({
     });
   }
 
-  // return call(ServerAPIMethods.SET_POWER_GOVERNOR, powerGovernorInfo, gameId);
+  return call(ServerAPIMethods.SET_POWER_GOVERNOR, powerGovernorInfo, gameId);
 };
 
 export const setEpp = ({
@@ -156,7 +176,7 @@ export const setEpp = ({
     return call(ServerAPIMethods.SET_EPP, { eppInfo, gameId });
   }
 
-  // return call(ServerAPIMethods.SET_EPP, eppInfo, gameId);
+  return call(ServerAPIMethods.SET_EPP, eppInfo, gameId);
 };
 
 export const persistTdp = ({
@@ -170,7 +190,7 @@ export const persistTdp = ({
     return call(ServerAPIMethods.PERSIST_TDP, { tdp, gameId });
   }
 
-  // return call(ServerAPIMethods.PERSIST_TDP, tdp, gameId);
+  return call(ServerAPIMethods.PERSIST_TDP, tdp, gameId);
 };
 
 export const setValuesForGameId = ({ gameId }: { gameId: string }) => {
@@ -178,7 +198,7 @@ export const setValuesForGameId = ({ gameId }: { gameId: string }) => {
     return call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, { gameId });
   }
 
-  // return call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, gameId);
+  return call(ServerAPIMethods.SET_VALUES_FOR_GAME_ID, gameId);
 };
 
 export const setSteamPatchValuesForGameId = ({
@@ -192,7 +212,7 @@ export const setSteamPatchValuesForGameId = ({
     });
   }
 
-  // return call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, gameId);
+  return call(ServerAPIMethods.SET_STEAM_PATCH_VALUES_FOR_GAME_ID, gameId);
 };
 
 export const persistGpu = ({
@@ -212,12 +232,10 @@ export const persistGpu = ({
     });
   }
 
-  // return call(
-  //   ServerAPIMethods.PERSIST_GPU,
-  //   minGpuFrequency,
-  //   maxGpuFrequency,
-  //   gameId
-  // );
+  return call<
+    [minGpuFrequency: number, maxGpuFrequency: number, gameId: string],
+    any
+  >(ServerAPIMethods.PERSIST_GPU, minGpuFrequency, maxGpuFrequency, gameId);
 };
 
 export const persistSmt = ({
@@ -234,7 +252,7 @@ export const persistSmt = ({
     });
   }
 
-  // return call(ServerAPIMethods.PERSIST_SMT, smt, gameId);
+  return call(ServerAPIMethods.PERSIST_SMT, smt, gameId);
 };
 
 export const persistCpuBoost = ({
@@ -248,5 +266,5 @@ export const persistCpuBoost = ({
     return call(ServerAPIMethods.PERSIST_CPU_BOOST, { cpuBoost, gameId });
   }
 
-  // return call(ServerAPIMethods.PERSIST_CPU_BOOST, cpuBoost, gameId);
+  return call(ServerAPIMethods.PERSIST_CPU_BOOST, cpuBoost, gameId);
 };
