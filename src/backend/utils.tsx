@@ -26,6 +26,7 @@ export enum AdvancedOptionsEnum {
   MAX_TDP_ON_GAME_PROFILE_CHANGE = "maxTdpOnGameProfileChange",
   AC_POWER_PROFILES = "acPowerProfiles",
   FORCE_DISABLE_TDP_ON_RESUME = "forceDisableTdpOnResume",
+  FORCE_DISABLE_SUSPEND_ACTIONS = "forceDisableSuspendActions",
   USE_PLATFORM_PROFILE = "platformProfile",
 }
 
@@ -53,6 +54,7 @@ export const DesktopAdvancedOptions = [
   AdvancedOptionsEnum.RYZENADJ_UNDERVOLT,
   AdvancedOptionsEnum.AC_POWER_PROFILES,
   AdvancedOptionsEnum.FORCE_DISABLE_TDP_ON_RESUME,
+  AdvancedOptionsEnum.FORCE_DISABLE_SUSPEND_ACTIONS,
   AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING,
   AdvancedOptionsEnum.ENABLE_AUTOMATIC_CPU_MANAGEMENT,
   LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
