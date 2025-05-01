@@ -10,6 +10,7 @@ fi
 NEW_TAG=$1
 
 sed -i "s/version\": \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version\": \"$NEW_TAG\"/" ./package.json
+sed -i "s/version\": \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version\": \"$NEW_TAG\"/" ./electron/package.json
 
 git add ./package.json
 
