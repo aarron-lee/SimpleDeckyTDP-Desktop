@@ -77,6 +77,19 @@ const createMainWindow = () => {
 };
 
 function setupPowerMonitor() {
+  powerMonitor.on("suspend", () => {
+    const settings = getDeckySettings();
+
+    if (
+      settings &&
+      settings.advanced &&
+      settings.advanced.forceDisableSuspendActions === false
+    ) {
+      // call onSuspend
+      return onSuspend();
+    }
+  });
+
   powerMonitor.on("resume", () => {
     const settings = getDeckySettings();
 
@@ -136,6 +149,12 @@ function createContextMenu() {
   ]);
 
   return contextMenu;
+}
+
+async function onSuspend() {
+  const endpoint = "on_suspend";
+
+  return await apiRequest(endpoint, {});
 }
 
 async function refreshTdp(deckySettings) {
