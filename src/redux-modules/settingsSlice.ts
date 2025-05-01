@@ -26,6 +26,15 @@ export type AdvancedOption = {
   disabled?: { [k: string]: any };
 };
 
+export interface RangedAdvancedOption extends AdvancedOption {
+  range: [n1: number, n2: number];
+  step: number;
+  valueSuffix: string;
+  showValue?: boolean;
+  showName?: boolean;
+  showDescription: boolean;
+}
+
 export interface TdpRangeState {
   minTdp: number;
   maxTdp: number;
@@ -340,6 +349,7 @@ export const settingsSlice = createSlice({
     ) => {
       const { isAcPower, advanced } = state;
       const { id, displayName } = action.payload;
+
       state.previousGameId = state.currentGameId;
       if (isAcPower && advanced[AdvancedOptionsEnum.AC_POWER_PROFILES]) {
         const newId = `${id}-ac-power`;
