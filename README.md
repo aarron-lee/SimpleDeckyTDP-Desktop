@@ -45,6 +45,10 @@ A Desktop port of the SimpleDeckyTDP Decky Plugin, built for AMD APU devices
 
 Note, the Desktop app does not have full feature parity with the Decky Plugin.
 
+**Certain features cannot be implemented**, such as:
+
+- per-game profiles
+
 # Installation
 
 If not already installed, install unofficial decky to your device
