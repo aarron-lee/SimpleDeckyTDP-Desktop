@@ -4,16 +4,23 @@ import {
   AdvancedOption,
   getAdvancedOptionsInfoSelector,
   getSteamPatchEnabledSelector,
+  RangedAdvancedOption,
   supportsCustomAcPowerSelector,
   updateAdvancedOption,
 } from "../../redux-modules/settingsSlice";
 import { get } from "lodash";
 import ErrorBoundary from "../ErrorBoundary";
 import ArrowToggleButton from "../atoms/ArrowToggleButton";
-import { DeckyRow, DeckySection, DeckyToggle } from "../atoms/DeckyFrontendLib";
+import {
+  DeckyRow,
+  DeckySection,
+  DeckySlider,
+  DeckyToggle,
+} from "../atoms/DeckyFrontendLib";
 import { useIsDesktop } from "../../hooks/desktopHooks";
 import {
   AdvancedOptionsEnum,
+  AdvancedOptionsType,
   DesktopAdvancedOptions,
 } from "../../backend/utils";
 
@@ -33,17 +40,27 @@ const calculateDisabled = (
 
     if (disabled.ifFalsy) {
       // ifFalsy = arr of advancedOptions
-      const { ifFalsy } = disabled;
+      const { ifFalsy, hideIfDisabled = false } = disabled;
 
       for (let i = 0; i < ifFalsy.length; i++) {
         if (!advancedState[ifFalsy[i]]) {
-          return true;
+          return { disabled: true, hideIfDisabled };
+        }
+      }
+    }
+    if (disabled.ifTruthy) {
+      // ifTruthy = arr of advancedOptions
+      const { ifTruthy, hideIfDisabled = false } = disabled;
+
+      for (let i = 0; i < ifTruthy.length; i++) {
+        if (advancedState[ifTruthy[i]]) {
+          return { disabled: true, hideIfDisabled };
         }
       }
     }
   }
 
-  return false;
+  return { disabled: false, hideIfDisabled: false };
 };
 
 const AdvancedOptions = () => {
@@ -84,7 +101,16 @@ const AdvancedOptions = () => {
               }
             }
 
-            if (type === "boolean") {
+            if (type === AdvancedOptionsType.BOOLEAN) {
+              const { disabled, hideIfDisabled } = calculateDisabled(
+                option,
+                advancedState
+              );
+
+              if (disabled && hideIfDisabled) {
+                return null;
+              }
+
               return (
                 <DeckyRow>
                   <DeckyToggle
@@ -99,7 +125,52 @@ const AdvancedOptions = () => {
                         updateAdvancedOption({ statePath, value: enabled })
                       );
                     }}
-                    disabled={calculateDisabled(option, advancedState)}
+                    disabled={disabled}
+                  />
+                </DeckyRow>
+              );
+            }
+            if (type === AdvancedOptionsType.NUMBER_RANGE) {
+              const {
+                range,
+                step,
+                showValue = true,
+                showName = true,
+                showDescription = true,
+                valueSuffix,
+              } = option as RangedAdvancedOption;
+              const [min, max] = range;
+
+              if (typeof value !== "number") return null;
+
+              const { disabled, hideIfDisabled } = calculateDisabled(
+                option,
+                advancedState
+              );
+
+              if (disabled && hideIfDisabled) {
+                return null;
+              }
+
+              return (
+                <DeckyRow>
+                  <DeckySlider
+                    value={value}
+                    key={idx}
+                    label={showName ? name : undefined}
+                    min={min}
+                    max={max}
+                    step={step}
+                    description={showDescription ? description : undefined}
+                    onChange={(newValue: number) => {
+                      return dispatch(
+                        updateAdvancedOption({ statePath, value: newValue })
+                      );
+                    }}
+                    valueSuffix={valueSuffix}
+                    disabled={disabled}
+                    highlightOnFocus
+                    showValue={showValue}
                   />
                 </DeckyRow>
               );
