@@ -4,6 +4,7 @@ import {
   updateEpp,
 } from "../../redux-modules/settingsSlice";
 import {
+  DEFAULT_POWER_CONTROLS,
   EppOption,
   EppOptions,
   PowerControlInfo,
@@ -19,10 +20,10 @@ const getOptions = (eppOptions: EppOption[]) => {
   const notchLabels: NotchLabel[] = [];
 
   let notchIdx = 0;
-  eppOptions.forEach((option, idx) => {
+  eppOptions.forEach((option) => {
     if (EppOptions[option]) {
-      idxToOption[idx] = option;
-      optionToIdx[option] = idx;
+      idxToOption[notchIdx] = option;
+      optionToIdx[option] = notchIdx;
 
       const label = EppOptions[option];
       notchLabels.push({
@@ -61,7 +62,9 @@ const EppSlider: FC<{ powerControlInfo: PowerControlInfo }> = ({
     return dispatch(updateEpp({ epp: eppOption, scalingDriver }));
   };
 
-  let sliderValue = optionToIdx[epp || "power"];
+  const defaultEpp = DEFAULT_POWER_CONTROLS[scalingDriver]?.epp || "power";
+
+  let sliderValue = optionToIdx[epp || defaultEpp];
 
   if (
     powerGovernor === "performance" &&
