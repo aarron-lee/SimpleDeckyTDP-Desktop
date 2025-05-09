@@ -10,6 +10,8 @@ export enum Devices {
   GPD_WIN4 = "G1618-04",
   ASUS_FLOW_Z13 = "ROG Flow Z13 GZ302EA_GZ302EA",
   ASUS_FLOW_Z13_SHORT = "ROG Flow Z13 GZ302",
+  STEAM_DECK_LCD = "Jupiter",
+  STEAM_DECK_OLED = "Galileo",
 }
 
 export enum AdvancedOptionsEnum {
@@ -43,6 +45,10 @@ export enum RogAllyAdvancedOptions {
 
 export enum LegionGoAdvancedOptions {
   CUSTOM_TDP_MODE = "lenovoCustomTdpMode",
+}
+
+export enum SteamDeckAdvancedOptions {
+  DECK_CUSTOM_TDP_LIMITS = "deckCustomTdpLimits",
 }
 
 export const DesktopAdvancedOptions = [
