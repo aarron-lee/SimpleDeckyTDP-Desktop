@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { fetchPowerControlInfo } from "./thunks";
 import { PowerControlInfo } from "../utils/constants";
@@ -23,7 +22,7 @@ export const uiSlice = createSlice({
     // },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchPowerControlInfo.fulfilled, (state, action) => {
+    builder.addCase(fetchPowerControlInfo.fulfilled, (state, action: any) => {
       if (action.payload) {
         state.powerControlInfo = action.payload as PowerControlInfo;
       }
