@@ -48,12 +48,11 @@ sudo rm -rf $HOME/.unofficial_homebrew/plugins/SimpleDeckyTDP
 
 # echo "installing SimpleDeckyTDP plugin for TDP control"
 # # download + install simple decky tdp
-curl -L $(curl -s https://api.github.com/repos/aarron-lee/SimpleDeckyTDP/releases/latest | grep "browser_download_url" | cut -d '"' -f 4) -o $HOME/SimpleDeckyTDP.tar.gz
-
-sudo tar -xzf SimpleDeckyTDP.tar.gz -C $HOME/.unofficial_homebrew/plugins
+curl -L $(curl -s https://api.github.com/repos/aarron-lee/SimpleDeckyTDP/releases/latest | grep "browser_download_url" | cut -d '"' -f 4) -o $HOME/SimpleDeckyTDP.zip
+sudo 7z x ./SimpleDeckyTDP.zip  -o$HOME/.unofficial_homebrew/plugins
 
 # install complete, remove build dir
-rm  $HOME/SimpleDeckyTDP.tar.gz
+rm  $HOME/SimpleDeckyTDP.zip
 sudo systemctl restart unofficial_plugin_loader.service
 
 # handle for Appimage UI
