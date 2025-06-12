@@ -6,7 +6,7 @@
   "homepage": "https://github.com/aarron-lee/SimpleDeckyTDP-Desktop",
   "description": "SimpleDeckyTDP Desktop Frontend",
   "license": "",
-  "version": "0.8.0",
+  "version": "0.8.3",
   "main": "main.js",
   "devDependencies": {
     "@electron/packager": "^18.3.2",
