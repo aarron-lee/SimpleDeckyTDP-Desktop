@@ -60,7 +60,10 @@ curl -L https://raw.githubusercontent.com/aarron-lee/decky-loader/main/dist/inst
 Then install SimpleDeckyTDP-Desktop and add the Desktop app
 
 ```bash
-curl -L https://raw.githubusercontent.com/aarron-lee/SimpleDeckyTDP-Desktop/main/install.sh | sh
+bash <(curl -fsSL https://raw.githubusercontent.com/aarron-lee/SimpleDeckyTDP-Desktop/main/install.sh)
+
+# try this if the above command doesn't work
+curl -L https://raw.githubusercontent.com/aarron-lee/SimpleDeckyTDP-Desktop/main/install_noprompt.sh | sh
 ```
 
 # Manual Build
