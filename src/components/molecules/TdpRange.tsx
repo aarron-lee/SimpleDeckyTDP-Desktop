@@ -7,7 +7,7 @@ import ErrorBoundary from "../ErrorBoundary";
 import { DeckyRow, DeckySection } from "../atoms/DeckyFrontendLib";
 import useIsIntel from "../../hooks/useIsIntel";
 import { useDeviceName, useIsSteamDeck } from "../../hooks/useDeviceName";
-import { Devices, SteamDeckAdvancedOptions } from "../../backend/utils";
+import { AdvancedOptionsEnum, Devices, SteamDeckAdvancedOptions } from "../../backend/utils";
 import { useAdvancedOption } from "../../hooks/useAdvanced";
 
 const useMaxSupportedTdpValue = () => {
@@ -15,12 +15,16 @@ const useMaxSupportedTdpValue = () => {
 
   const deviceName = useDeviceName();
   const isSteamDeck = useIsSteamDeck();
+  const tdpOverride = useAdvancedOption(
+    AdvancedOptionsEnum.ENABLE_MAX_TDP_OVERRIDE
+  );
 
   if (isSteamDeck) {
     return 20;
   }
 
   if (
+    tdpOverride ||
     deviceName.includes(Devices.ASUS_FLOW_Z13) ||
     deviceName.includes(Devices.ASUS_FLOW_Z13_SHORT)
   ) {
