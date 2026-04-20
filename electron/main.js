@@ -18,6 +18,17 @@ const { setItem, getItem, getSettings } = initializeSettings(app);
 let mainWindow;
 let tray;
 
+const toggleWindow = () => {
+  const windowIsVisible = mainWindow.isVisible();
+  if (windowIsVisible) {
+    mainWindow.hide();
+    setItem(IS_WINDOW_HIDDEN, true);
+  } else {
+    mainWindow.show();
+    setItem(IS_WINDOW_HIDDEN, false);
+  }
+};
+
 const createMainWindow = () => {
   const show = !getItem(IS_WINDOW_HIDDEN);
 
@@ -50,29 +61,37 @@ const createMainWindow = () => {
   createTray();
 
   tray.on("click", () => {
-    const toggleWindow = () => {
-      const windowIsVisible = mainWindow.isVisible();
-      if (windowIsVisible) {
-        mainWindow.hide();
-        setItem(IS_WINDOW_HIDDEN, true);
-      } else {
-        mainWindow.show();
-        setItem(IS_WINDOW_HIDDEN, false);
-      }
-    };
     toggleWindow();
   });
 
-  // mainWindow.once("ready-to-show", () => {mainWindow.show()});
-
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
+  handleQuitBehavior();
 
   setupPowerMonitor();
 
   ipcMain.on("gamepadButtonPress", (_, buttonName) => {
     handleGamepadButtonPress(mainWindow, buttonName);
+  });
+};
+
+const handleQuitBehavior = () => {
+  let isQuitting = false;
+
+  app.on("before-quit", () => {
+    isQuitting = true;
+  });
+
+  // mainWindow.once("ready-to-show", () => {mainWindow.show()});
+  mainWindow.on("close", (e) => {
+    if (!isQuitting) {
+      e.preventDefault();
+
+      toggleWindow();
+    }
+    isQuitting = false;
+  });
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
   });
 };
 
