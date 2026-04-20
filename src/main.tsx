@@ -9,6 +9,7 @@ import {
   acPowerEventListener,
   currentGameInfoListener,
 } from "./steamListeners.tsx";
+import AppSettings from "./components/molecules/AppSettings.tsx";
 
 setupGamepadEventListener();
 
@@ -21,7 +22,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ChakraProvider theme={theme}>
       <Box minWidth={"500px"}>
         <App />
+        <AppSettings />
       </Box>
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
