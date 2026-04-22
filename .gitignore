@@ -37,3 +37,4 @@ electron/*
 !electron/settings.js
 !electron/pluginApi.js
 !electron/tag_release.sh
+!electron/constants.js
