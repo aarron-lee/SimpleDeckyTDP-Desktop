@@ -9,7 +9,17 @@ import ErrorBoundary from "../ErrorBoundary.tsx";
 export default function AppSettings() {
   const [enabled, setEnabled] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (window.electronUtilsRender?.getMinOnCloseSetting) {
+      window.electronUtilsRender.getMinOnCloseSetting().then(setEnabled);
+    }
+  }, []);
+
+  const onChange = (enabled: boolean) => {
+    if (window.electronUtilsRender?.setMinOnCloseSetting) {
+      window.electronUtilsRender.setMinOnCloseSetting(enabled).then(setEnabled);
+    }
+  };
 
   return (
     <ErrorBoundary title="App Settings">
@@ -18,7 +28,7 @@ export default function AppSettings() {
           <DeckyToggle
             label="Minimize on Close Window"
             checked={enabled}
-            onChange={() => {}}
+            onChange={onChange}
           />
         </DeckyRow>
       </DeckySection>

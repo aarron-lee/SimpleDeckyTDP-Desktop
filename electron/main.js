@@ -10,7 +10,12 @@ const {
 const path = require("path");
 const fs = require("fs");
 const { initializeApi } = require("./pluginApi");
-const { initializeSettings, IS_WINDOW_HIDDEN } = require("./settings");
+const {
+  initializeSettings,
+  IS_WINDOW_HIDDEN,
+  MIN_ON_CLOSE_ENABLED,
+} = require("./settings");
+const { IPC_ACTIONS } = require("./constants");
 
 const { getDeckySettings, apiRequest, getAcPowerStatus } = initializeApi(app);
 const { setItem, getItem, getSettings } = initializeSettings(app);
@@ -44,6 +49,7 @@ const createMainWindow = () => {
     webPreferences: {
       nodeIntegration: false,
       webSecurity: false,
+      sandbox: false,
       preload: path.join(__dirname, "./preload.js"),
     },
   });
@@ -67,11 +73,20 @@ const createMainWindow = () => {
   handleQuitBehavior();
 
   setupPowerMonitor();
+};
 
-  ipcMain.on("gamepadButtonPress", (_, buttonName) => {
+function handleIpc() {
+  ipcMain.on(IPC_ACTIONS.GAMEPAD_BUTTON_PRESS, (_, buttonName) => {
     handleGamepadButtonPress(mainWindow, buttonName);
   });
-};
+  ipcMain.handle(IPC_ACTIONS.GET_MIN_ON_CLOSE, () => {
+    return !!getItem(MIN_ON_CLOSE_ENABLED);
+  });
+  ipcMain.handle(IPC_ACTIONS.SET_MIN_ON_CLOSE, (_, newV) => {
+    setItem(MIN_ON_CLOSE_ENABLED, !!newV);
+    return !!getItem(MIN_ON_CLOSE_ENABLED);
+  });
+}
 
 const handleQuitBehavior = () => {
   let isQuitting = false;
@@ -82,7 +97,7 @@ const handleQuitBehavior = () => {
 
   // mainWindow.once("ready-to-show", () => {mainWindow.show()});
   mainWindow.on("close", (e) => {
-    if (!isQuitting) {
+    if (!isQuitting && getItem(MIN_ON_CLOSE_ENABLED)) {
       e.preventDefault();
 
       toggleWindow();
@@ -126,6 +141,8 @@ function setupPowerMonitor() {
 }
 
 app.whenReady().then(() => {
+  handleIpc();
+
   createMainWindow();
 
   app.on("activate", () => {

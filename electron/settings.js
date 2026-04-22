@@ -2,10 +2,12 @@ const path = require("path");
 const fs = require("fs");
 
 const IS_WINDOW_HIDDEN = "isWindowHidden";
+const MIN_ON_CLOSE_ENABLED = "minOnCloseEnabled";
 
 const DEFAULT_SETTINGS = {
   appVersion: undefined,
   [IS_WINDOW_HIDDEN]: false,
+  [MIN_ON_CLOSE_ENABLED]: false,
 };
 
 function initializeSettings(app) {
@@ -51,4 +53,5 @@ function initializeSettings(app) {
 module.exports = {
   initializeSettings,
   IS_WINDOW_HIDDEN,
+  MIN_ON_CLOSE_ENABLED,
 };
