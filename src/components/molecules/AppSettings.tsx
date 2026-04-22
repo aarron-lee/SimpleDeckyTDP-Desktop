@@ -6,7 +6,7 @@ import {
 } from "../atoms/DeckyFrontendLib.tsx";
 import ErrorBoundary from "../ErrorBoundary.tsx";
 
-export default function AppSettings() {
+const useMinOnClose = () => {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -20,6 +20,12 @@ export default function AppSettings() {
       window.electronUtilsRender.setMinOnCloseSetting(enabled).then(setEnabled);
     }
   };
+
+  return { enabled, onChange };
+};
+
+export default function AppSettings() {
+  const { enabled, onChange } = useMinOnClose();
 
   return (
     <ErrorBoundary title="App Settings">
