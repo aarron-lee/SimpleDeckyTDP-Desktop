@@ -70,6 +70,7 @@ export const DesktopAdvancedOptions = [
   AdvancedOptionsEnum.ENABLE_BACKGROUND_POLLING,
   AdvancedOptionsEnum.ENABLE_AUTOMATIC_CPU_MANAGEMENT,
   AdvancedOptionsEnum.CHARGE_LIMIT,
+  AdvancedOptionsEnum.ENABLE_CHARGE_LIMIT,
   AdvancedOptionsEnum.ENABLE_SIMPLE_EPP_LABELS,
   AdvancedOptionsEnum.ENABLE_MAX_TDP_OVERRIDE,
   LegionGoAdvancedOptions.CUSTOM_TDP_MODE,
